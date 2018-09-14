@@ -16,17 +16,17 @@ public class Settings extends Config {
 
     @Comment("These first 4 aren't configurable") // This is a comment
     @Final // Indicates that this value isn't configurable
-    public static final String ISSUES = "https://github.com/IntellectualSites/PlotSquared/issues";
+    public static final String ISSUES = "Please report issues of this build for PetteriM1";
     @Final
     public static final String WIKI = "https://github.com/IntellectualSites/PlotSquared/wiki";
     @Final
-    public static String DATE = "01.01.0001"; // These values are set from P2 before loading
+    public static String DATE = "null"; // These values are set from P2 before loading
     @Final
-    public static String BUILD; // These values are set from P2 before loading
+    public static String BUILD = "Custom"; // These values are set from P2 before loading
     @Final
-    public static String COMMIT; // These values are set from P2 before loading
+    public static String COMMIT = "null"; // These values are set from P2 before loading
     @Final
-    public static String PLATFORM; // These values are set from P2 before loading
+    public static String PLATFORM = "Nukkit"; // These values are set from P2 before loading
 
     @Comment("Show additional information in console")
     public static boolean DEBUG = true;

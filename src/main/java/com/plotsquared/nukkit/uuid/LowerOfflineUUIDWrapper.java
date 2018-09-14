@@ -37,5 +37,4 @@ public class LowerOfflineUUIDWrapper extends UUIDWrapper {
     public OfflinePlotPlayer[] getOfflinePlayers() {
         return new OfflinePlotPlayer[0];
     }
-
 }

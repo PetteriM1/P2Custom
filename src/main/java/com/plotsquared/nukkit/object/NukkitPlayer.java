@@ -138,7 +138,6 @@ public class NukkitPlayer extends PlotPlayer {
     
     @Override
     public void setCompassTarget(Location location) {
-        throw new UnsupportedOperationException("Not implemented yet: setCompassTarget");
     }
     
     @Override
@@ -219,7 +218,6 @@ public class NukkitPlayer extends PlotPlayer {
     
     @Override
     public void setTime(long time) {
-        throw new UnsupportedOperationException("Not implemented yet: setTIme");
     }
     
     @Override
@@ -234,7 +232,6 @@ public class NukkitPlayer extends PlotPlayer {
 
     @Override
     public void playMusic(Location location, int id) {
-        throw new UnsupportedOperationException("Not implemented yet: playMusic");
     }
     
     @Override
@@ -243,7 +240,6 @@ public class NukkitPlayer extends PlotPlayer {
     }
 
     @Override public void stopSpectating() {
-        // Do nothing
     }
 
     @Override

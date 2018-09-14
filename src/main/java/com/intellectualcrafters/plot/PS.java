@@ -87,7 +87,7 @@ import java.util.zip.ZipInputStream;
 /**
  * An implementation of the core, with a static getter for easy access.
  */
-public class PS{
+public class PS {
     private static PS instance;
     // Implementation
     public final IPlotMain IMP;

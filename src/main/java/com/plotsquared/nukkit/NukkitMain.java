@@ -37,7 +37,6 @@ import com.plotsquared.nukkit.uuid.LowerOfflineUUIDWrapper;
 import com.sk89q.worldedit.WorldEdit;
 import java.io.File;
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
 public final class NukkitMain extends PluginBase implements Listener, IPlotMain {
@@ -71,7 +70,7 @@ public final class NukkitMain extends PluginBase implements Listener, IPlotMain 
             this.name = getDescription().getName();
             getServer().getName();
             new PS(this, "Nukkit");
-            Generator.addGenerator(NukkitHybridGen.class, getPluginName(), 1);
+            Generator.addGenerator(NukkitHybridGen.class, getPluginName(), 2);
             if (Settings.Enabled_Components.WORLDS) {
                 TaskManager.IMP.taskRepeat(new Runnable() {
                     @Override
@@ -353,10 +352,6 @@ public final class NukkitMain extends PluginBase implements Listener, IPlotMain 
     @Override
     public InventoryUtil initInventoryUtil() {
         return new NukkitInventoryUtil();
-    }
-
-    @Override
-    public void startMetrics() {
     }
 
     @Override
