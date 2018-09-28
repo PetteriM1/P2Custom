@@ -297,7 +297,6 @@ public class PS {
         } catch (Throwable e) {
             e.printStackTrace();
         }
-        PS.log(C.ENABLED.f(IMP.getPluginName()));
     }
 
     /**
