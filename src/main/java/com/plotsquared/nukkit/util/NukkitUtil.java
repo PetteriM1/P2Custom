@@ -3,9 +3,6 @@ package com.plotsquared.nukkit.util;
 import cn.nukkit.OfflinePlayer;
 import cn.nukkit.Player;
 import cn.nukkit.block.Block;
-import cn.nukkit.block.BlockWallSign;
-import cn.nukkit.blockentity.BlockEntity;
-import cn.nukkit.blockentity.BlockEntitySign;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.item.Item;
 import cn.nukkit.level.Level;
@@ -118,30 +115,6 @@ public class NukkitUtil extends WorldUtil {
     public String getBiome(String world, int x, int z) {
         int id = getWorld(world).getBiomeId(x, z);
         return Biome.getBiome(id).getName();
-    }
-
-    @Override
-    public void setSign(String worldName, int x, int y, int z, String[] lines) {
-        Level world = getWorld(worldName);
-        BlockWallSign sign = new BlockWallSign(0);
-        Vector3 pos = new Vector3(x, y, z);
-        world.setBlock(pos, sign);
-        BlockEntity tile = world.getBlockEntity(pos);
-        if (tile instanceof BlockEntitySign) {
-            ((BlockEntitySign) tile).setText(lines[0], lines[1], lines[2], lines[3]);
-            tile.scheduleUpdate();
-        }
-    }
-
-    @Override
-    public String[] getSign(Location location) {
-        Level world = getWorld(location.getWorld());
-        Vector3 pos = new Vector3(location.getX(), location.getY(), location.getZ());
-        BlockEntity tile = world.getBlockEntity(pos);
-        if (tile instanceof BlockEntitySign) {
-            return ((BlockEntitySign) tile).getText();
-        }
-        return null;
     }
 
     @Override

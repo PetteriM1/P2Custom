@@ -384,7 +384,7 @@ public class ExpireManager {
 
     public void deleteWithMessage(Plot plot, Runnable whenDone) {
         if (plot.isMerged()) {
-            plot.unlinkPlot(true, false);
+            plot.unlinkPlot(true);
         }
         for (UUID helper : plot.getTrusted()) {
             PlotPlayer player = UUIDHandler.getPlayer(helper);

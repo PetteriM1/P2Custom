@@ -762,10 +762,7 @@ public class Plot {
         final HashSet<RegionWrapper> regions = this.getRegions();
         final Set<Plot> plots = this.getConnectedPlots();
         final ArrayDeque<Plot> queue = new ArrayDeque<>(plots);
-        if (isDelete) {
-            this.removeSign();
-        }
-        this.unlinkPlot(true, !isDelete);
+        this.unlinkPlot(true);
         final PlotManager manager = this.area.getPlotManager();
         Runnable run = new Runnable() {
             @Override
@@ -844,11 +841,10 @@ public class Plot {
 
     /**
      * Unlink the plot and all connected plots.
-     * @param createSign
      * @param createRoad
      * @return
      */
-    public boolean unlinkPlot(boolean createRoad, boolean createSign) {
+    public boolean unlinkPlot(boolean createRoad) {
         if (!this.isMerged()) {
             return false;
         }
@@ -863,9 +859,6 @@ public class Plot {
             return false;
         }
         this.clearRatings();
-        if (createSign) {
-            this.removeSign();
-        }
         PlotManager manager = this.area.getPlotManager();
         if (createRoad) {
             manager.startPlotUnlink(this.area, ids);
@@ -889,48 +882,10 @@ public class Plot {
             boolean[] merged = new boolean[]{false, false, false, false};
             current.setMerged(merged);
         }
-        if (createSign) {
-            GlobalBlockQueue.IMP.addTask(new Runnable() {
-                @Override
-                public void run() {
-                    for (Plot current : plots) {
-                        current.setSign(MainUtil.getName(current.owner));
-                    }
-                }
-            });
-        }
         if (createRoad) {
             manager.finishPlotUnlink(this.area, ids);
         }
         return true;
-    }
-
-    /**
-     * Set the sign for a plot to a specific name
-     * @param name
-     */
-    public void setSign(final String name) {
-        if (!isLoaded()) return;
-        if (!PS.get().isMainThread(Thread.currentThread())) {
-            TaskManager.runTask(new Runnable() {
-                @Override
-                public void run() {
-                    Plot.this.setSign(name);
-                }
-            });
-            return;
-        }
-        PlotManager manager = this.area.getPlotManager();
-        if (this.area.ALLOW_SIGNS) {
-            Location loc = manager.getSignLoc(this.area, this);
-            String id = this.id.x + ";" + this.id.y;
-            String[] lines = new String[]{
-                    C.OWNER_SIGN_LINE_1.formatted().replaceAll("%id%", id),
-                    C.OWNER_SIGN_LINE_2.formatted().replaceAll("%id%", id).replaceAll("%plr%", name),
-                    C.OWNER_SIGN_LINE_3.formatted().replaceAll("%id%", id).replaceAll("%plr%", name),
-                    C.OWNER_SIGN_LINE_4.formatted().replaceAll("%id%", id).replaceAll("%plr%", name)};
-            WorldUtil.IMP.setSign(this.getWorldName(), loc.getX(), loc.getY(), loc.getZ(), lines);
-        }
     }
 
     protected boolean isLoaded() {
@@ -1106,11 +1061,11 @@ public class Plot {
 
     /**
      * Unlink a plot and remove the roads
-     * @see this#unlinkPlot(boolean, boolean)
+     * @see this#unlinkPlot(boolean)
      * @return true if plot was linked
      */
     public boolean unlink() {
-        return this.unlinkPlot(true, true);
+        return this.unlinkPlot(true);
     }
 
     public Location getCenter() {
@@ -1120,9 +1075,6 @@ public class Plot {
         Location loc = new Location(this.getWorldName(), MathMan.average(bot.getX(), top.getX()), MathMan.average(bot.getY(), top.getY()), MathMan.average(bot.getZ(), top.getZ()));
         if (!isLoaded()) return loc;
         int y = isLoaded() ? WorldUtil.IMP.getHighestBlock(getWorldName(), loc.getX(), loc.getZ()) : 64;
-        if (area.ALLOW_SIGNS) {
-            y = Math.max(y, getManager().getSignLoc(area, this).getY());
-        }
         loc.setY(1 + y);
         return loc;
     }
@@ -1133,9 +1085,6 @@ public class Plot {
         int z = largest.minZ - 1;
         PlotManager manager = getManager();
         int y = isLoaded() ? WorldUtil.IMP.getHighestBlock(getWorldName(), x, z) : 64;
-        if (area.ALLOW_SIGNS && (y <= 0 || y >= 255)) {
-            y = Math.max(y, manager.getSignLoc(area, this).getY() - 1);
-        }
         return new Location(getWorldName(), x, y + 1, z);
     }
 
@@ -1298,27 +1247,6 @@ public class Plot {
         }
     }
 
-    /** Remove the plot sign if it is set. */
-    public void removeSign() {
-        PlotManager manager = this.area.getPlotManager();
-        if (!this.area.ALLOW_SIGNS) {
-            return;
-        }
-        Location loc = manager.getSignLoc(this.area, this);
-        LocalBlockQueue queue = GlobalBlockQueue.IMP.getNewQueue(getWorldName(), false);
-        queue.setBlock(loc.getX(), loc.getY(), loc.getZ(), 0);
-        queue.flush();
-    }
-
-    /** Set the plot sign if plot signs are enabled. */
-    public void setSign() {
-        if (this.owner == null) {
-            this.setSign("unknown");
-            return;
-        }
-        this.setSign(UUIDHandler.getName(this.owner));
-    }
-
     /**
      * Register a plot and create it in the database<br>
      *  - The plot will not be created if the owner is null<br>
@@ -1346,7 +1274,6 @@ public class Plot {
         } else {
             area.addPlot(this);
         }
-        setSign(player.getName());
         MainUtil.sendMessage(player, C.CLAIMED);
         if (teleport) {
             teleportPlayer(player);
@@ -2024,68 +1951,13 @@ public class Plot {
 
     /**
      * Guess the owner of a plot either by the value in memory, or the sign data<br>
-     * Note: Recovering from sign information is useful if e.g. PlotMe conversion wasn't successful
      * @return UUID
      */
     public UUID guessOwner() {
         if (this.hasOwner()) {
             return this.owner;
         }
-        if (!this.area.ALLOW_SIGNS) {
-            return null;
-        }
-        try {
-            final Location loc = this.getManager().getSignLoc(this.area, this);
-            String[] lines = TaskManager.IMP.sync(new RunnableVal<String[]>() {
-                @Override
-                public void run(String[] value) {
-                    ChunkManager.manager.loadChunk(loc.getWorld(), loc.getChunkLoc(), false);
-                    this.value = WorldUtil.IMP.getSign(loc);
-                }
-            });
-            if (lines == null) {
-                return null;
-            }
-            loop:
-            for (int i = 4; i > 0; i--) {
-                String caption = C.valueOf("OWNER_SIGN_LINE_" + i).s();
-                int index = caption.indexOf("%plr%");
-                if (index < 0) {
-                    continue;
-                }
-                String line = lines[i - 1];
-                if (line.length() <= index) {
-                    return null;
-                }
-                String name = line.substring(index);
-                if (name.isEmpty()) {
-                    return null;
-                }
-                UUID owner = UUIDHandler.getUUID(name, null);
-                if (owner != null) {
-                    this.owner = owner;
-                    break;
-                }
-                if (lines[i - 1].length() == 15) {
-                    BiMap<StringWrapper, UUID> map = UUIDHandler.getUuidMap();
-                    for (Entry<StringWrapper, UUID> entry : map.entrySet()) {
-                        String key = entry.getKey().value;
-                        if (key.length() > name.length() && key.startsWith(name)) {
-                            this.owner = entry.getValue();
-                            break loop;
-                        }
-                    }
-                }
-                this.owner = UUID.nameUUIDFromBytes(("OfflinePlayer:" + name).getBytes(StandardCharsets.UTF_8));
-                break;
-            }
-            if (this.hasOwner()) {
-                this.create();
-            }
-            return this.owner;
-        } catch (IllegalArgumentException ignored) {
-            return null;
-        }
+        return null;
     }
 
     /**
@@ -2774,8 +2646,6 @@ public class Plot {
                     return false;
                 }
                 occupied = true;
-            } else {
-                plot.removeSign();
             }
         }
         // world border
@@ -2798,7 +2668,6 @@ public class Plot {
                         Plot originPlot = originArea.getPlotAbs(new PlotId(current.id.x - offset.x, current.id.y - offset.y));
                         originPlot.getManager().unclaimPlot(originArea, originPlot, null);
                     }
-                    plot.setSign();
                     TaskManager.runTask(whenDone);
                     return;
                 }
@@ -2908,7 +2777,6 @@ public class Plot {
                     for (Plot current : getConnectedPlots()) {
                         destination.getManager().claimPlot(destination.getArea(), destination);
                     }
-                    destination.setSign();
                     TaskManager.runTask(whenDone);
                     return;
                 }

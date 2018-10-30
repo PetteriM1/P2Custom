@@ -61,11 +61,6 @@ public class SinglePlotManager extends PlotManager {
     }
 
     @Override
-    public Location getSignLoc(PlotArea plotArea, Plot plot) {
-        return null;
-    }
-
-    @Override
     public String[] getPlotComponents(PlotArea plotArea, PlotId plotId) {
         return new String[0];
     }

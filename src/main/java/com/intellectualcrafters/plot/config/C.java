@@ -694,13 +694,6 @@ public enum C {
     SET_OWNER("$4You successfully set the plot owner", "Owner"),
     NOW_OWNER("$4You are now owner of plot %s", "Owner"),
     /*
-     * Signs
-     */
-    OWNER_SIGN_LINE_1("$1ID: $1%id%", "Signs"),
-    OWNER_SIGN_LINE_2("$1Owner:", "Signs"),
-    OWNER_SIGN_LINE_3("$2%plr%", "Signs"),
-    OWNER_SIGN_LINE_4("$3Claimed", "Signs"),
-    /*
      * Help
      */
     HELP_HEADER("$3&m---------&r $1Plot\u00B2 Help $3&m---------", "Help"),

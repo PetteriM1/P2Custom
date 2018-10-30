@@ -46,10 +46,9 @@ public class Owner extends SetCommand {
                     return false;
                 }
                 Set<Plot> connected = plot.getConnectedPlots();
-                plot.unlinkPlot(false, false);
+                plot.unlinkPlot(false);
                 for (Plot current : connected) {
                     current.unclaim();
-                    current.removeSign();
                 }
                 MainUtil.sendMessage(player, C.SET_OWNER);
                 return true;
@@ -74,7 +73,6 @@ public class Owner extends SetCommand {
                 return false;
             }
         }
-        final String finalName = name;
         final UUID finalUUID = uuid;
         final boolean removeDenied = plot.isDenied(finalUUID);
         Runnable run = new Runnable() {
@@ -82,7 +80,6 @@ public class Owner extends SetCommand {
             public void run() {
                 if (removeDenied) plot.removeDenied(finalUUID);
                 plot.setOwner(finalUUID);
-                plot.setSign(finalName);
                 MainUtil.sendMessage(player, C.SET_OWNER);
                 if (other != null) {
                     MainUtil.sendMessage(other, C.NOW_OWNER, plot.getArea() + ";" + plot.getId());

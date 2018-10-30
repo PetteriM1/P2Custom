@@ -476,15 +476,4 @@ public class ClassicPlotManager extends SquarePlotManager {
     public String[] getPlotComponents(PlotArea plotArea, PlotId plotId) {
         return new String[]{"main", "floor", "air", "all", "border", "wall", "outline", "middle"};
     }
-
-    /**
-     * Remove sign for a plot.
-     */
-    @Override
-    public Location getSignLoc(PlotArea plotArea, Plot plot) {
-        ClassicPlotWorld dpw = (ClassicPlotWorld) plotArea;
-        plot = plot.getBasePlot(false);
-        Location bot = plot.getBottomAbs();
-        return new Location(plotArea.worldname, bot.getX() - 1, dpw.ROAD_HEIGHT + 1, bot.getZ() - 2);
-    }
 }

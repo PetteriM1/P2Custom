@@ -848,9 +848,6 @@ public abstract class PlotArea {
                 trusted.addAll(plot.getTrusted());
                 members.addAll(plot.getMembers());
                 denied.addAll(plot.getDenied());
-                if (removeRoads) {
-                    plot.removeSign();
-                }
             }
         }
         members.removeAll(trusted);

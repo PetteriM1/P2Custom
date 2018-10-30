@@ -158,7 +158,6 @@ public class Purge extends SubCommand {
                         for (PlotPlayer pp : plot.getPlayersInPlot()) {
                             PlotListener.plotEntry(pp, plot);
                         }
-                        plot.removeSign();
                     }
                 }
                 DBFunc.purgeIds(ids);
