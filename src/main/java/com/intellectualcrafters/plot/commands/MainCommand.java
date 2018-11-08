@@ -23,7 +23,7 @@ import java.util.Arrays;
  */
 @CommandDeclaration(
         command = "plot",
-        aliases = {"plots", "p", "plotsquared", "plot2", "p2", "ps", "2", "plotme", "plotz", "ap"})
+        aliases = "p")
 public class MainCommand extends Command {
     
     private static MainCommand instance;
@@ -44,7 +44,6 @@ public class MainCommand extends Command {
             new Confirm();
             new Template();
             new Download();
-            new Changelog();
             new Template();
             new Setup();
             new Area();
@@ -74,11 +73,9 @@ public class MainCommand extends Command {
             new Reload();
             new Relight();
             new Merge();
-            new DebugPaste();
             new Unlink();
             new Kick();
             new Rate();
-            new DebugClaimTest();
             new Inbox();
             new Comment();
             new Database();

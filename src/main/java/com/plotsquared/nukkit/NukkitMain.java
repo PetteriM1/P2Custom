@@ -8,7 +8,6 @@ import cn.nukkit.event.Listener;
 import cn.nukkit.level.Level;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.level.generator.Generator;
-import cn.nukkit.level.generator.Normal;
 import cn.nukkit.metadata.MetadataValue;
 import cn.nukkit.plugin.Plugin;
 import cn.nukkit.plugin.PluginBase;
@@ -131,15 +130,11 @@ public final class NukkitMain extends PluginBase implements Listener, IPlotMain 
 
     @Override
     public void log(String message) {
-        try {
-            message = C.color(message);
-            if (!Settings.Chat.CONSOLE_COLOR) {
-                message = message.replaceAll('\u00A7' + "[0-9]", "");
-            }
-            this.getServer().getConsoleSender().sendMessage(message);
-        } catch (Throwable ignored) {
-            System.out.println(ConsoleColors.fromString(message));
+        message = C.color(message);
+        if (!Settings.Chat.CONSOLE_COLOR) {
+            message = message.replaceAll('\u00A7' + "[0-9]", "");
         }
+        this.getServer().getLogger().info(message);
     }
 
     @Override
@@ -168,8 +163,8 @@ public final class NukkitMain extends PluginBase implements Listener, IPlotMain 
 
     @Override
     public void registerCommands() {
-        NukkitCommand bukkitCommand = new NukkitCommand("plot", new String[] {"p","plot","ps","plotsquared","p2","2"});
-        getServer().getCommandMap().register("plot", bukkitCommand);
+        NukkitCommand nukkitCommand = new NukkitCommand("plot", new String[] {"p","plot"});
+        getServer().getCommandMap().register("plot", nukkitCommand);
     }
 
     @Override
@@ -295,7 +290,7 @@ public final class NukkitMain extends PluginBase implements Listener, IPlotMain 
                 map.put("generator", instance);
                 return new NukkitPlotGenerator(map);
             } catch (Throwable e) {
-                System.out.println("Failed to create generator for " + name + " | " + gen);
+                this.getServer().getLogger().error("Failed to create generator for " + name + " | " + gen);
                 while (e.getCause() != null) {
                     e = e.getCause();
                 }

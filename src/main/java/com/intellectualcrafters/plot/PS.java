@@ -95,8 +95,7 @@ public class PS {
     private ILogger logger;
     // Current thread
     private final Thread thread;
-    // Platform / Version / Update URL
-    private Updater updater;
+    // Platform / Version
     private PlotVersion version;
     // WorldEdit instance
     public WorldEdit worldedit;
@@ -217,7 +216,6 @@ public class PS {
             if (Settings.Enabled_Components.WORLDEDIT_RESTRICTIONS) {
                 try {
                     if (this.IMP.initWorldEdit()) {
-                        PS.debug(IMP.getPluginName() + " hooked into WorldEdit.");
                         this.worldedit = WorldEdit.getInstance();
                         WorldEdit.getInstance().getEventBus().register(new WESubscriber());
                         if (Settings.Enabled_Components.COMMANDS) {
@@ -225,9 +223,7 @@ public class PS {
                         }
 
                     }
-                } catch (Throwable e) {
-                    PS.debug("Incompatible version of WorldEdit, please upgrade: http://builds.enginehub.org/job/worldedit?branch=master");
-                }
+                } catch (Throwable e) {}
             }
             // Economy
             if (Settings.Enabled_Components.ECONOMY) {
@@ -237,23 +233,6 @@ public class PS {
                         EconHandler.manager = PS.this.IMP.getEconomyHandler();
                     }
                 });
-            }
-
-            // Check for updates
-            if (Settings.Enabled_Components.UPDATER) {
-                updater = new Updater();
-                TaskManager.IMP.taskAsync(new Runnable() {
-                    @Override
-                    public void run() {
-                        updater.update(getPlatform(), getVersion());
-                    }
-                });
-                TaskManager.IMP.taskRepeatAsync(new Runnable() {
-                    @Override
-                    public void run() {
-                        updater.update(getPlatform(), getVersion());
-                    }
-                }, 36000);
             }
 
             // World generators:
@@ -284,16 +263,6 @@ public class PS {
                     }
                 }, 1);
             }
-
-            // Copy files
-            copyFile("automerge.js", Settings.Paths.SCRIPTS);
-            copyFile("town.template", Settings.Paths.TEMPLATES);
-            copyFile("skyblock.template", Settings.Paths.TEMPLATES);
-            copyFile("german.yml", Settings.Paths.TRANSLATIONS);
-            copyFile("s_chinese_unescaped.yml", Settings.Paths.TRANSLATIONS);
-            copyFile("s_chinese.yml", Settings.Paths.TRANSLATIONS);
-            copyFile("italian.yml", Settings.Paths.TRANSLATIONS);
-            showDebug();
         } catch (Throwable e) {
             e.printStackTrace();
         }
@@ -347,14 +316,6 @@ public class PS {
      */
     public ILogger getLogger() {
         return logger;
-    }
-
-    /**
-     * The plugin updater
-     * @return
-     */
-    public Updater getUpdater() {
-        return updater;
     }
 
     public PlotAreaManager getPlotAreaManager() {
@@ -1747,18 +1708,6 @@ public class PS {
         Storage.load(storageFile);
         Storage.save(storageFile);
         storage = YamlConfiguration.loadConfiguration(storageFile);
-    }
-
-    /**
-     * Show startup debug information.
-     */
-    private void showDebug() {
-        if (Settings.DEBUG) {
-            Map<String, Object> components = Settings.getFields(Settings.Enabled_Components.class);
-            for (Entry<String, Object> component : components.entrySet()) {
-                PS.log(C.PREFIX + String.format("&cKey: &6%s&c, Value: &6%s", component.getKey(), component.getValue()));
-            }
-        }
     }
 
     /**

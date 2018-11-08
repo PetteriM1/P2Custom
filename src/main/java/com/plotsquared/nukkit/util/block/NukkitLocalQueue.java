@@ -50,7 +50,7 @@ public class NukkitLocalQueue<T> extends BasicLocalBlockQueue<T> {
 
     @Override
     public void fixChunkLighting(int x, int z) {
-        // Do nothing
+
     }
 
     @Override
