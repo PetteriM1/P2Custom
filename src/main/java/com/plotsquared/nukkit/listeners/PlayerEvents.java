@@ -87,13 +87,11 @@ import java.util.regex.Pattern;
 
 public class PlayerEvents extends PlotListener implements Listener {
 
-    private boolean pistonBlocks = true;
-    // To prevent recursion
     private boolean tmpTeleport = true;
 
-    // TODO fix this
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void onPhysicsEvent(BlockUpdateEvent event) {
+        if (!event.getBlock().getLevel().getName().equals("plotcreative")) return;
         if (event instanceof RedstoneUpdateEvent) {
             Block block = event.getBlock();
             Location loc = NukkitUtil.getLocation(block.getLocation());
@@ -151,6 +149,7 @@ public class PlayerEvents extends PlotListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onEntityCombustByEntity(EntityCombustEvent event) {
+        if (!event.getEntity().getLevel().getName().equals("plotcreative")) return;
         if (event instanceof EntityCombustByEntityEvent) {
             EntityDamageByEntityEvent eventChange =
         new EntityDamageByEntityEvent(((EntityCombustByEntityEvent) event).getCombuster(), event.getEntity(), EntityDamageEvent.DamageCause.FIRE_TICK, event.getDuration());
@@ -160,6 +159,7 @@ public class PlayerEvents extends PlotListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onEntityDamageByEntityEvent(EntityDamageEvent event) {
+        if (!event.getEntity().getLevel().getName().equals("plotcreative")) return;
         if (event instanceof EntityDamageByEntityEvent) {
             EntityDamageByEntityEvent specific = (EntityDamageByEntityEvent) event;
             Entity damager = specific.getDamager();
@@ -177,6 +177,7 @@ public class PlayerEvents extends PlotListener implements Listener {
     @EventHandler
     public void onProjectileLaunch(ProjectileLaunchEvent event) {
         EntityProjectile entity = event.getEntity();
+        if (!entity.getLevel().getName().equals("plotcreative")) return;
         if (!(entity instanceof EntityPotion)) {
             return;
         }
@@ -198,6 +199,7 @@ public class PlayerEvents extends PlotListener implements Listener {
     @EventHandler
     public boolean onProjectileHit(ProjectileHitEvent event) {
         EntityProjectile entity = (EntityProjectile) event.getEntity();
+        if (!entity.getLevel().getName().equals("plotcreative")) return false;
         Location loc = NukkitUtil.getLocation(entity);
         if (!PS.get().hasPlotArea(loc.getWorld())) {
             return true;
@@ -232,11 +234,11 @@ public class PlayerEvents extends PlotListener implements Listener {
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void playerCommand(PlayerCommandPreprocessEvent event) {
+        if (!event.getPlayer().getLevel().getName().equals("plotcreative")) return;
         String msg = event.getMessage().toLowerCase().replaceAll("/", "").trim();
         if (msg.isEmpty()) {
             return;
         }
-        String[] split = msg.split(" ");
         Player player = event.getPlayer();
         PlotPlayer pp = NukkitUtil.getPlayer(player);
         Plot plot = pp.getCurrentPlot();
@@ -306,12 +308,14 @@ public class PlayerEvents extends PlotListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void playerRespawn(PlayerRespawnEvent event) {
         Player player = event.getPlayer();
+        if (!player.getLevel().getName().equals("plotcreative")) return;
         PlotPlayer pp = NukkitUtil.getPlayer(player);
         EventUtil.manager.doRespawnTask(pp);
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onTeleport(PlayerTeleportEvent event) {
+        if (!event.getPlayer().getLevel().getName().equals("plotcreative")) return;
         if (event.getTo() == null || event.getFrom() == null) {
             NukkitUtil.getPlayer(event.getPlayer()).deleteMeta("location");
             NukkitUtil.getPlayer(event.getPlayer()).deleteMeta("lastplot");
@@ -436,6 +440,7 @@ public class PlayerEvents extends PlotListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void playerMove(PlayerMoveEvent event) {
+        if (!event.getPlayer().getLevel().getName().equals("plotcreative")) return;
         cn.nukkit.level.Location from = event.getFrom();
         cn.nukkit.level.Location to = event.getTo();
         int x2;
@@ -555,6 +560,7 @@ public class PlayerEvents extends PlotListener implements Listener {
 
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     public void onChat(PlayerChatEvent event) {
+        if (!event.getPlayer().getLevel().getName().equals("plotcreative")) return;
         PlotPlayer plotPlayer = NukkitUtil.getPlayer(event.getPlayer());
         Location location = plotPlayer.getLocation();
         PlotArea area = location.getPlotArea();
@@ -595,6 +601,7 @@ public class PlayerEvents extends PlotListener implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void blockDestroy(BlockBreakEvent event) {
         Player player = event.getPlayer();
+        if (!player.getLevel().getName().equals("plotcreative")) return;
         Location location = NukkitUtil.getLocation(event.getBlock().getLocation());
         PlotArea area = location.getPlotArea();
         if (area == null) {
@@ -654,6 +661,7 @@ public class PlayerEvents extends PlotListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onBigBoom(ExplosionPrimeEvent event) {
+        if (!event.getEntity().getLevel().getName().equals("plotcreative")) return;
         Entity entity = event.getEntity();
         Location location = NukkitUtil.getLocation(entity);
         PlotArea area = location.getPlotArea();
@@ -678,6 +686,7 @@ public class PlayerEvents extends PlotListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onBigBoom(EntityExplodeEvent event) {
+        if (!event.getEntity().getLevel().getName().equals("plotcreative")) return;
         Location location = NukkitUtil.getLocation(event.getPosition());
         PlotArea area = location.getPlotArea();
         if (area == null) {
@@ -720,6 +729,7 @@ public class PlayerEvents extends PlotListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onEntityBlockForm(BlockFormEvent event) {
         String world = event.getBlock().getLevel().getName();
+        if (!world.equals("plotcreative")) return;
         if (!PS.get().hasPlotArea(world)) {
             return;
         }
@@ -731,6 +741,7 @@ public class PlayerEvents extends PlotListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onBlockSpread(BlockSpreadEvent event) {
         Block block = event.getBlock();
+        if (!block.getLevel().getName().equals("plotcreative")) return;
         Location location = NukkitUtil.getLocation(block.getLocation());
         if (location.isPlotRoad()) {
             event.setCancelled(true);
@@ -767,6 +778,7 @@ public class PlayerEvents extends PlotListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onGrow(BlockGrowEvent event) {
         Block b = event.getBlock();
+        if (!b.getLevel().getName().equals("plotcreative")) return;
         Location location = NukkitUtil.getLocation(b.getLocation());
         if (location.isUnownedPlotArea()) {
             event.setCancelled(true);
@@ -776,6 +788,7 @@ public class PlayerEvents extends PlotListener implements Listener {
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     public void onInteract(PlayerInteractEvent event) {
         Player player = event.getPlayer();
+        if (!player.getLevel().getName().equals("plotcreative")) return;
         PlotPlayer pp = NukkitUtil.getPlayer(player);
         PlotArea area = pp.getPlotAreaAbs();
         if (area == null) {
@@ -835,6 +848,7 @@ public class PlayerEvents extends PlotListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void creatureSpawnEvent(EntitySpawnEvent event) {
         Entity entity = event.getEntity();
+        if (!entity.getLevel().getName().equals("plotcreative")) return;
         Location location = NukkitUtil.getLocation(entity.getLocation());
         PlotArea area = location.getPlotArea();
         if (area == null) {
@@ -862,6 +876,7 @@ public class PlayerEvents extends PlotListener implements Listener {
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void onEntityFall(EntityBlockChangeEvent event) {
         Entity entity = event.getEntity();
+        if (!entity.getLevel().getName().equals("plotcreative")) return;
         Location location = NukkitUtil.getLocation(entity);
         if (!PS.get().hasPlotArea(location.getWorld())) {
             return;
@@ -871,7 +886,6 @@ public class PlayerEvents extends PlotListener implements Listener {
             return;
         }
         Block from = event.getFrom();
-        Block to = event.getTo();
         final Plot finalPlot = area.getOwnedPlotAbs(location);
         boolean toBlock = from == null || from.getId() == 0;
         if (toBlock) {
@@ -1006,6 +1020,7 @@ public class PlayerEvents extends PlotListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onBlockBurn(BlockBurnEvent event) {
         Block b = event.getBlock();
+        if (!b.getLevel().getName().equals("plotcreative")) return;
         Location location = NukkitUtil.getLocation(b.getLocation());
 
         PlotArea area = location.getPlotArea();
@@ -1024,6 +1039,7 @@ public class PlayerEvents extends PlotListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onBucketEmpty(PlayerBucketEmptyEvent event) {
         Block block = event.getBlockClicked();
+        if (!block.getLevel().getName().equals("plotcreative")) return;
         Block b = block.getSide(event.getBlockFace());
         Location location = NukkitUtil.getLocation(b.getLocation());
         PlotArea area = location.getPlotArea();
@@ -1058,6 +1074,7 @@ public class PlayerEvents extends PlotListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onInventoryClose(InventoryCloseEvent event) {
+        if (!event.getPlayer().getLevel().getName().equals("plotcreative")) return;
         NukkitUtil.getPlayer(event.getPlayer()).deleteMeta("inventory");
     }
 
@@ -1073,6 +1090,7 @@ public class PlayerEvents extends PlotListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onBucketFill(PlayerBucketFillEvent event) {
         Block b = event.getBlockClicked();
+        if (!b.getLevel().getName().equals("plotcreative")) return;
         Location location = NukkitUtil.getLocation(b.getLocation());
         PlotArea area = location.getPlotArea();
         if (area == null) {
@@ -1110,6 +1128,7 @@ public class PlayerEvents extends PlotListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onPotionSplash(PotionCollideEvent event) {
         EntityPotion entity = event.getThrownPotion();
+        if (!entity.getLevel().getName().equals("plotcreative")) return;
         Location l = NukkitUtil.getLocation(entity);
         if (!PS.get().hasPlotArea(l.getWorld())) {
             return;
@@ -1211,14 +1230,6 @@ public class PlayerEvents extends PlotListener implements Listener {
                     MainUtil.sendMessage(plotPlayer, C.NO_PERMISSION_EVENT, "plots.admin.destroy." + stub);
                     return false;
                 }
-            } else if (false) { // TODO armor stand
-                if (plot != null && (plot.getFlag(Flags.MISC_BREAK, false) || plot.isAdded(plotPlayer.getUUID()))) {
-                    return true;
-                }
-                if (!Permissions.hasPermission(plotPlayer, "plots.admin.destroy." + stub)) {
-                    MainUtil.sendMessage(plotPlayer, C.NO_PERMISSION_EVENT, "plots.admin.destroy." + stub);
-                    return false;
-                }
             } else if (victim instanceof EntityMob) { // victim is monster
                 if (plot != null && (plot.getFlag(Flags.HOSTILE_ATTACK, false) || plot.getFlag(Flags.PVE, false) || plot
                         .isAdded(plotPlayer.getUUID()))) {
@@ -1277,6 +1288,7 @@ public class PlayerEvents extends PlotListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void blockCreate(BlockPlaceEvent event) {
+        if (!event.getBlock().getLevel().getName().equals("plotcreative")) return;
         Location location = NukkitUtil.getLocation(event.getBlock().getLocation());
         PlotArea area = location.getPlotArea();
         if (area == null) {
