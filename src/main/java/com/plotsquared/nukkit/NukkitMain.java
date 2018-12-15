@@ -4,6 +4,7 @@ import cn.nukkit.Nukkit;
 import cn.nukkit.OfflinePlayer;
 import cn.nukkit.Player;
 import cn.nukkit.entity.Entity;
+import cn.nukkit.entity.EntityHuman;
 import cn.nukkit.event.Listener;
 import cn.nukkit.level.Level;
 import cn.nukkit.level.format.FullChunk;
@@ -197,7 +198,7 @@ public final class NukkitMain extends PluginBase implements Listener, IPlotMain 
                             }
                             Entity[] entities = world.getEntities();
                             for (Entity entity : entities) {
-                                if (entity instanceof Player) {
+                                if (entity instanceof EntityHuman) {
                                     continue;
                                 }
                                 com.intellectualcrafters.plot.object.Location location = NukkitUtil.getLocation(entity.getLocation());

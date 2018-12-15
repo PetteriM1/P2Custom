@@ -1159,7 +1159,7 @@ public class PlayerEvents extends PlotListener implements Listener {
             stub = "road";
         } else {
             // Prioritize plots for close to seamless pvp zones
-            if (victim.ticksLived > damager.ticksLived) {
+            if (victim.age > damager.age) {
                 if (dplot == null || !(victim instanceof Player)) {
                     if (vplot == null) {
                         plot = dplot;
