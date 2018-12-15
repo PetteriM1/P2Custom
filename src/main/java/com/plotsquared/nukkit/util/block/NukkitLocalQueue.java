@@ -27,7 +27,6 @@ public class NukkitLocalQueue<T> extends BasicLocalBlockQueue<T> {
 
     @Override
     public void optimize() {
-
     }
 
     @Override
@@ -45,12 +44,10 @@ public class NukkitLocalQueue<T> extends BasicLocalBlockQueue<T> {
 
     @Override
     public void refreshChunk(int x, int z) {
-
     }
 
     @Override
     public void fixChunkLighting(int x, int z) {
-
     }
 
     @Override

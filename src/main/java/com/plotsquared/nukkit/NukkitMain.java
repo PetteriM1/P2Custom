@@ -4,6 +4,7 @@ import cn.nukkit.Nukkit;
 import cn.nukkit.OfflinePlayer;
 import cn.nukkit.Player;
 import cn.nukkit.entity.Entity;
+import cn.nukkit.entity.EntityHuman;
 import cn.nukkit.event.Listener;
 import cn.nukkit.level.Level;
 import cn.nukkit.level.format.FullChunk;
@@ -190,20 +191,19 @@ public final class NukkitMain extends PluginBase implements Listener, IPlotMain 
                 PS.get().foreachPlotArea(new RunnableVal<PlotArea>() {
                     @Override
                     public void run(PlotArea plotArea) {
-                        Level world = getServer().getLevelByName(plotArea.worldname);
+                        Level world = getServer().getLevelByName("plotcreative");
                         try {
                             if (world == null) {
                                 return;
                             }
-                            Entity[] entities = world.getEntities();
-                            for (Entity entity : entities) {
-                                if (entity instanceof Player) {
+                            for (Entity entity : world.getEntities()) {
+                                if (entity instanceof EntityHuman) {
                                     continue;
                                 }
                                 com.intellectualcrafters.plot.object.Location location = NukkitUtil.getLocation(entity.getLocation());
                                 Plot plot = location.getPlot();
                                 if (plot == null) {
-                                    if (location.isPlotArea()) {
+                                    if (location.isPlotArea() && entity.getLevel().getName().equals("plotcreative")) {
                                         entity.kill();
                                     }
                                     continue;
@@ -214,7 +214,9 @@ public final class NukkitMain extends PluginBase implements Listener, IPlotMain 
                                 }
                                 Plot origin = (Plot) meta.get(0).value();
                                 if (!plot.equals(origin.getBasePlot(false))) {
-                                    entity.kill();
+                                    if (entity.getLevel().getName().equals("plotcreative")) {
+                                        entity.kill();
+                                    }
                                 }
                                 continue;
                             }
@@ -224,7 +226,7 @@ public final class NukkitMain extends PluginBase implements Listener, IPlotMain 
                     }
                 });
             }
-        }, 20);
+        }, 30);
     }
 
     @Override

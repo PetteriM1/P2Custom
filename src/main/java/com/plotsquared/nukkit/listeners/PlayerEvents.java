@@ -151,8 +151,7 @@ public class PlayerEvents extends PlotListener implements Listener {
     public void onEntityCombustByEntity(EntityCombustEvent event) {
         if (!event.getEntity().getLevel().getName().equals("plotcreative")) return;
         if (event instanceof EntityCombustByEntityEvent) {
-            EntityDamageByEntityEvent eventChange =
-        new EntityDamageByEntityEvent(((EntityCombustByEntityEvent) event).getCombuster(), event.getEntity(), EntityDamageEvent.DamageCause.FIRE_TICK, event.getDuration());
+            EntityDamageByEntityEvent eventChange = new EntityDamageByEntityEvent(((EntityCombustByEntityEvent) event).getCombuster(), event.getEntity(), EntityDamageEvent.DamageCause.FIRE_TICK, event.getDuration());
             onEntityDamageByEntityEvent(eventChange);
         }
     }
@@ -277,7 +276,7 @@ public class PlayerEvents extends PlotListener implements Listener {
         final Player player = event.getPlayer();
         NukkitUtil.getPlayer(event.getPlayer()).unregister();
         final PlotPlayer pp = NukkitUtil.getPlayer(player);
-        // Now
+
         String name = pp.getName();
         StringWrapper sw = new StringWrapper(name);
         UUID uuid = pp.getUUID();
@@ -291,9 +290,7 @@ public class PlayerEvents extends PlotListener implements Listener {
                 plotEntry(pp, plot);
             }
         }
-        // Delayed
 
-        // Async
         TaskManager.runTaskLaterAsync(new Runnable() {
             @Override
             public void run() {
