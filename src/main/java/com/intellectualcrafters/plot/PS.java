@@ -1117,7 +1117,7 @@ public class PS {
      * @param baseGenerator The generator for that world, or null
      */
     public void loadWorld(String world, GeneratorWrapper<?> baseGenerator) {
-        if (world.equals("CheckingPlotSquaredGenerator")) {
+        if (world.equals("CheckingPlotSquaredGenerator") || !world.equals("plotcreative")) {
             return;
         }
         this.manager.addWorld(world);
