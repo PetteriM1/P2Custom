@@ -191,7 +191,7 @@ public final class NukkitMain extends PluginBase implements Listener, IPlotMain 
                 PS.get().foreachPlotArea(new RunnableVal<PlotArea>() {
                     @Override
                     public void run(PlotArea plotArea) {
-                        Level world = getServer().getLevelByName("plotcreative");
+                        Level world = getServer().getLevelByName("CreativePlot");
                         try {
                             if (world == null) {
                                 return;
@@ -203,7 +203,7 @@ public final class NukkitMain extends PluginBase implements Listener, IPlotMain 
                                 com.intellectualcrafters.plot.object.Location location = NukkitUtil.getLocation(entity.getLocation());
                                 Plot plot = location.getPlot();
                                 if (plot == null) {
-                                    if (location.isPlotArea() && entity.getLevel().getName().equals("plotcreative")) {
+                                    if (location.isPlotArea() && entity.getLevel().getName().equals("CreativePlot")) {
                                         entity.kill();
                                     }
                                     continue;
@@ -214,7 +214,7 @@ public final class NukkitMain extends PluginBase implements Listener, IPlotMain 
                                 }
                                 Plot origin = (Plot) meta.get(0).value();
                                 if (!plot.equals(origin.getBasePlot(false))) {
-                                    if (entity.getLevel().getName().equals("plotcreative")) {
+                                    if (entity.getLevel().getName().equals("CreativePlot")) {
                                         entity.kill();
                                     }
                                 }
