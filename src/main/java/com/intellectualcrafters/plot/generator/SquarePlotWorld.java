@@ -6,8 +6,8 @@ import com.intellectualcrafters.plot.object.PlotId;
 
 public abstract class SquarePlotWorld extends GridPlotWorld {
     
-    public int PLOT_WIDTH = 42;
-    public int ROAD_WIDTH = 7;
+    public int PLOT_WIDTH = 70;
+    public int ROAD_WIDTH = 8;
     public int ROAD_OFFSET_X = 0;
     public int ROAD_OFFSET_Z = 0;
 
