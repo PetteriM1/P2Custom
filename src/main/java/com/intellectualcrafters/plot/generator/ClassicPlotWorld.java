@@ -17,7 +17,7 @@ public abstract class ClassicPlotWorld extends SquarePlotWorld {
     public PlotBlock WALL_BLOCK = PlotBlock.get((short) 44, (byte) 0);
     public PlotBlock CLAIMED_WALL_BLOCK = PlotBlock.get((short) 44, (byte) 1);
     public PlotBlock WALL_FILLING = PlotBlock.get((short) 1, (byte) 0);
-    public PlotBlock ROAD_BLOCK = PlotBlock.get((short) 155, (byte) 0);
+    public PlotBlock ROAD_BLOCK = PlotBlock.get((short) 251, (byte) 7);
     public boolean PLOT_BEDROCK = true;
 
     public ClassicPlotWorld(String worldName, String id, IndependentPlotGenerator generator, PlotId min, PlotId max) {
