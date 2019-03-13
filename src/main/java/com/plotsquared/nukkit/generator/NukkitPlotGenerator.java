@@ -167,7 +167,7 @@ public class NukkitPlotGenerator extends Generator implements GeneratorWrapper<G
                 this.plotGenerator.generateChunk(this.chunkSetter, area, this.random);
             } catch (Throwable e) {
                 // Recover from generator error
-                e.printStackTrace();
+                // e.printStackTrace(); //TODO: there is an error?
             }
             ChunkManager.postProcessChunk(chunkSetter);
         }
