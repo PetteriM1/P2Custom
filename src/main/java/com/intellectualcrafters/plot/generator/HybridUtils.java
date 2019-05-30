@@ -229,7 +229,6 @@ public abstract class HybridUtils {
                 } else {
                     final Runnable task = this;
                     TaskManager.runTaskAsync(new Runnable() {
-                        private long last = System.currentTimeMillis();
                         @Override
                         public void run() {
                             try {

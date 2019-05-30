@@ -89,7 +89,6 @@ public final class NukkitMain extends PluginBase implements Listener, IPlotMain 
         if (manager instanceof SinglePlotAreaManager) {
             long start = System.currentTimeMillis();
             SinglePlotArea area = ((SinglePlotAreaManager) manager).getArea();
-            Map<Integer, Level> worlds = getServer().getLevels();
             Level unload = null;
             for (Level world : getServer().getLevels().values()) {
                 String name = world.getName();

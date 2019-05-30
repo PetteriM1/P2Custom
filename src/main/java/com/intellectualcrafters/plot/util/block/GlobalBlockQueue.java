@@ -25,7 +25,6 @@ public class GlobalBlockQueue {
      */
     private long last;
     private long secondLast;
-    private long lastSuccess;
     private final AtomicBoolean running;
 
     public enum QueueStage {
@@ -47,7 +46,6 @@ public class GlobalBlockQueue {
             do {
                 boolean more = queue.next();
                 if (!more) {
-                    lastSuccess = last;
                     if (inactiveQueues.size() == 0 && activeQueues.size() == 0) {
                         tasks();
                     }
@@ -90,7 +88,6 @@ public class GlobalBlockQueue {
             @Override
             public void run() {
                 if (inactiveQueues.isEmpty() && activeQueues.isEmpty()) {
-                    lastSuccess = System.currentTimeMillis();
                     tasks();
                     return;
                 }

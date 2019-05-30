@@ -14,9 +14,6 @@ public class NukkitTaskManager extends TaskManager {
         this.plugin = bukkitMain;
     }
 
-    private AtomicInteger index = new AtomicInteger(0);
-    private HashMap<Integer, Integer> tasks = new HashMap<>();
-
     @Override
     public int taskRepeat(Runnable r, int interval) {
         TaskHandler task = this.plugin.getServer().getScheduler().scheduleRepeatingTask(r, interval, false);

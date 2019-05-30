@@ -7,7 +7,8 @@ import cn.nukkit.entity.Entity;
 import cn.nukkit.item.Item;
 import cn.nukkit.level.Level;
 import cn.nukkit.level.Position;
-import cn.nukkit.level.generator.biome.Biome;
+import cn.nukkit.level.biome.Biome;
+import cn.nukkit.level.biome.EnumBiome;
 import cn.nukkit.math.Vector3;
 import com.intellectualcrafters.plot.object.Location;
 import com.intellectualcrafters.plot.object.PlotBlock;
@@ -114,7 +115,7 @@ public class NukkitUtil extends WorldUtil {
     @Override
     public String getBiome(String world, int x, int z) {
         int id = getWorld(world).getBiomeId(x, z);
-        return Biome.getBiome(id).getName();
+        return EnumBiome.getBiome(id).getName();
     }
 
     @Override
@@ -152,7 +153,7 @@ public class NukkitUtil extends WorldUtil {
     @Override
     public int getBiomeFromString(String biomeString) {
         try {
-            Biome biome = Biome.getBiome(biomeString.toUpperCase());
+            Biome biome = EnumBiome.getBiome(biomeString.toUpperCase());
             return biome.getId();
         } catch (Throwable ignored) {
             return -1;

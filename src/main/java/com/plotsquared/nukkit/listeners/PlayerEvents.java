@@ -87,7 +87,6 @@ import java.util.regex.Pattern;
 
 public class PlayerEvents extends PlotListener implements Listener {
 
-    private boolean pistonBlocks = true;
     // To prevent recursion
     private boolean tmpTeleport = true;
 
@@ -236,7 +235,6 @@ public class PlayerEvents extends PlotListener implements Listener {
         if (msg.isEmpty()) {
             return;
         }
-        String[] split = msg.split(" ");
         Player player = event.getPlayer();
         PlotPlayer pp = NukkitUtil.getPlayer(player);
         Plot plot = pp.getCurrentPlot();

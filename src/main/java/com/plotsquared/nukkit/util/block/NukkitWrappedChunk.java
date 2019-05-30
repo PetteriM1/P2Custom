@@ -1,6 +1,7 @@
 package com.plotsquared.nukkit.util.block;
 
-import cn.nukkit.level.generator.biome.Biome;
+import cn.nukkit.level.biome.Biome;
+import cn.nukkit.level.biome.EnumBiome;
 import cn.nukkit.level.format.generic.BaseFullChunk;
 import com.intellectualcrafters.plot.object.Location;
 import com.intellectualcrafters.plot.object.PlotBlock;
@@ -38,7 +39,7 @@ public class NukkitWrappedChunk extends ScopedLocalBlockQueue {
 
     @Override
     public boolean setBiome(int x, int z, String biome) {
-        Biome b = Biome.getBiome(biome);
+        Biome b = EnumBiome.getBiome(biome);
         int id = b.getId();
         chunk.setBiomeId(x, z, id);
         return true;
@@ -46,7 +47,7 @@ public class NukkitWrappedChunk extends ScopedLocalBlockQueue {
 
     @Override
     public void fillBiome(String biome) {
-        Biome b = Biome.getBiome(biome);
+        Biome b = EnumBiome.getBiome(biome);
         int id = b.getId();
         for (int x = 0; x < 16; x++) {
             for (int z = 0; z < 16; z++) {

@@ -11,7 +11,6 @@
   <name>PlotSquared</name>
   <packaging>jar</packaging>
   <build>
-    <finalName>PlotSquared-Nukkit-${project.version}</finalName>
     <sourceDirectory>src/main/java/</sourceDirectory>
     <resources>
       <resource>
@@ -97,7 +96,7 @@
       <version>SuomiCraftPE</version>
       <optional>false</optional>
       <scope>system</scope>
-      <systemPath>${basedir}/lib/Nukkit-SuomiCraftPE.jar</systemPath>
+      <systemPath>${basedir}/lib/Nukkit-PM1E.jar</systemPath>
     </dependency>
   </dependencies>
 </project>
