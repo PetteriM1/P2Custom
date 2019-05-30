@@ -98,7 +98,6 @@ public class PlotListener {
                         }
                     }
                 }
-                Optional<PlotGameMode> guestGamemodeFlag = plot.getFlag(Flags.GUEST_GAMEMODE);
                 if (gamemodeFlag.isPresent()) {
                     if (player.getGameMode() != gamemodeFlag.get() && !plot.isAdded(player.getUUID())) {
                         if (!Permissions.hasPermission(player, "plots.gamemode.bypass")) {

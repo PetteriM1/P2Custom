@@ -461,7 +461,6 @@ public abstract class Command {
     }
 
     public String getCommandString() {
-        String base;
         if (this.parent == null) {
             return "/" + toString();
         } else {

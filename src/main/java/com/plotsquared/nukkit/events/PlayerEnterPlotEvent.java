@@ -9,7 +9,6 @@ public class PlayerEnterPlotEvent extends PlayerEvent {
 
     private static final HandlerList handlers = new HandlerList();
     private final Plot plot;
-    private final Player player;
 
     /**
      * Called when a player leaves a plot.

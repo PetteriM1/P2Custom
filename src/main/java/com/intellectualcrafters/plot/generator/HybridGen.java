@@ -51,8 +51,6 @@ public class HybridGen extends IndependentPlotGenerator {
         }
         // Coords
         Location min = result.getMin();
-        int cx = min.getX() >> 4;
-        int cz = min.getZ() >> 4;
         int bx = (min.getX()) - hpw.ROAD_OFFSET_X;
         int bz = (min.getZ()) - hpw.ROAD_OFFSET_Z;
         short rbx;
@@ -96,7 +94,6 @@ public class HybridGen extends IndependentPlotGenerator {
             }
         }
         // generation
-        HashMap<Integer, char[]> sch = hpw.G_SCH;
         for (short x = 0; x < 16; x++) {
             if (gx[x]) {
                 for (short z = 0; z < 16; z++) {

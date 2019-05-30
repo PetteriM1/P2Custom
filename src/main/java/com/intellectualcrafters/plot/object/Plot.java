@@ -1,7 +1,6 @@
 package com.intellectualcrafters.plot.object;
 
 import com.google.common.base.Optional;
-import com.google.common.collect.BiMap;
 import com.google.common.collect.ImmutableSet;
 import com.intellectualcrafters.jnbt.CompoundTag;
 import com.intellectualcrafters.plot.PS;
@@ -35,7 +34,6 @@ import java.awt.geom.PathIterator;
 import java.awt.geom.Rectangle2D;
 import java.io.File;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -1083,7 +1081,6 @@ public class Plot {
         RegionWrapper largest = getLargestRegion();
         int x = (largest.maxX >> 1) - (largest.minX >> 1) + largest.minX;
         int z = largest.minZ - 1;
-        PlotManager manager = getManager();
         int y = isLoaded() ? WorldUtil.IMP.getHighestBlock(getWorldName(), x, z) : 64;
         return new Location(getWorldName(), x, y + 1, z);
     }

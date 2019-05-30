@@ -17,12 +17,10 @@ import com.intellectualcrafters.plot.util.WorldUtil;
 
 public class SinglePlotArea extends GridPlotWorld {
 
-    private final SinglePlotArea instance;
     public boolean VOID = false;
 
     public SinglePlotArea() {
         super("*", null, new SingleWorldGenerator(), null, null);
-        instance = this;
         this.ALLOW_SIGNS = false;
         this.DEFAULT_HOME = new PlotLoc(Integer.MAX_VALUE, Integer.MAX_VALUE);
     }

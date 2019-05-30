@@ -70,7 +70,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -1511,19 +1510,6 @@ public class PS {
             e.printStackTrace();
             PS.log("&cCould not save " + file);
         }
-    }
-
-    private Map<String, Map<PlotId, Plot>> getPlotsRaw() {
-        HashMap<String, Map<PlotId, Plot>> map = new HashMap<>();
-        for (PlotArea area : this.manager.getAllPlotAreas()) {
-            Map<PlotId, Plot> map2 = map.get(area.toString());
-            if (map2 == null) {
-                map.put(area.toString(), area.getPlotsRaw());
-            } else {
-                map2.putAll(area.getPlotsRaw());
-            }
-        }
-        return map;
     }
 
     /**

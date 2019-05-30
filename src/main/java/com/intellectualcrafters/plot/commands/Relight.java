@@ -26,7 +26,6 @@ public class Relight extends Command {
             C.NOT_IN_PLOT.send(player);
             return;
         }
-        HashSet<RegionWrapper> regions = plot.getRegions();
         final LocalBlockQueue queue = plot.getArea().getQueue(false);
         ChunkManager.chunkTask(plot, new RunnableVal<int[]>() {
             @Override
