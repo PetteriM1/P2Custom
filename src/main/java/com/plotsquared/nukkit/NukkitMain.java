@@ -388,8 +388,8 @@ public final class NukkitMain extends PluginBase implements Listener, IPlotMain 
 
     private void setGenerator(Level level, Generator generator) {
         try {
-            Field fieldClass = Level.class.getDeclaredField("generator");
-            Field fieldInstance = Level.class.getDeclaredField("generatorInstance");
+            Field fieldClass = Level.class.getDeclaredField("generatorClass");
+            Field fieldInstance = Level.class.getDeclaredField("generators");
             fieldClass.setAccessible(true);
             fieldInstance.setAccessible(true);
             fieldClass.set(level, generator.getClass());
