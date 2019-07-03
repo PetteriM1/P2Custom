@@ -3,8 +3,6 @@ package com.plotsquared.nukkit.util;
 import cn.nukkit.scheduler.TaskHandler;
 import com.intellectualcrafters.plot.util.TaskManager;
 import com.plotsquared.nukkit.NukkitMain;
-import java.util.HashMap;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class NukkitTaskManager extends TaskManager {
 

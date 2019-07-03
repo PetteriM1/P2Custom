@@ -4,7 +4,6 @@ import com.intellectualcrafters.plot.PS;
 import com.intellectualcrafters.plot.object.Location;
 import com.intellectualcrafters.plot.object.Plot;
 import com.intellectualcrafters.plot.object.PlotArea;
-import com.intellectualcrafters.plot.object.PlotManager;
 import com.intellectualcrafters.plot.object.RunnableVal3;
 
 public class ScopedLocalBlockQueue extends DelegateLocalBlockQueue {

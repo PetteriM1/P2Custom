@@ -233,7 +233,7 @@ public class NukkitUtil extends WorldUtil {
     public void setBiomes(String worldName, RegionWrapper region, String biomeString) {
         Level world = getWorld(worldName);
         try {
-            int biome = (int) Biome.class.getDeclaredField(biomeString.toUpperCase()).get(null);
+            int biome = EnumBiome.getBiome(biomeString.toUpperCase()).getId();
             for (int x = region.minX; x <= region.maxX; x++) {
                 for (int z = region.minZ; z <= region.maxZ; z++) {
                     world.setBiomeId(x, z, (byte) biome);
