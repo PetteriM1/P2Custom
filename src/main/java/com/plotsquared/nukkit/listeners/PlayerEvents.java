@@ -1037,7 +1037,12 @@ public class PlayerEvents extends PlotListener implements Listener {
     public void onBucketEmpty(PlayerBucketEmptyEvent event) {
         Block block = event.getBlockClicked();
         if (!block.getLevel().getName().equals("plotcreative")) return;
-        Block b = block.getSide(event.getBlockFace());
+        Block b;
+        if (event.getBlockFace() == null) { // Cauldron
+            b = event.getBlockClicked();
+        } else {
+            b = block.getSide(event.getBlockFace());
+        }
         Location location = NukkitUtil.getLocation(b.getLocation());
         PlotArea area = location.getPlotArea();
         if (area == null) {
