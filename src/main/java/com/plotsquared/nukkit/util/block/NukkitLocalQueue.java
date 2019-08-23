@@ -2,7 +2,7 @@ package com.plotsquared.nukkit.util.block;
 
 import cn.nukkit.block.Block;
 import cn.nukkit.level.Level;
-import cn.nukkit.level.generator.biome.Biome;
+import cn.nukkit.level.biome.EnumBiome;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.level.format.generic.BaseFullChunk;
 import cn.nukkit.math.Vector3;
@@ -22,11 +22,14 @@ public class NukkitLocalQueue<T> extends BasicLocalBlockQueue<T> {
 
     @Override
     public LocalChunk<T> getLocalChunk(int x, int z) {
-        return (LocalChunk<T>) new BasicLocalChunk(this, x, z) {};
+        return (LocalChunk<T>) new BasicLocalChunk(this, x, z) {
+            // Custom stuff?
+        };
     }
 
     @Override
     public void optimize() {
+
     }
 
     @Override
@@ -44,10 +47,12 @@ public class NukkitLocalQueue<T> extends BasicLocalBlockQueue<T> {
 
     @Override
     public void refreshChunk(int x, int z) {
+
     }
 
     @Override
     public void fixChunkLighting(int x, int z) {
+        // Do nothing
     }
 
     @Override
@@ -98,6 +103,7 @@ public class NukkitLocalQueue<T> extends BasicLocalBlockQueue<T> {
         if (lc.biomes != null) {
             int bx = lc.getX() << 4;
             int bz = lc.getX() << 4;
+            String last = null;
             int biome = -1;
             for (int x = 0; x < lc.biomes.length; x++) {
                 String[] biomes2 = lc.biomes[x];
@@ -105,7 +111,7 @@ public class NukkitLocalQueue<T> extends BasicLocalBlockQueue<T> {
                     for (int y = 0; y < biomes2.length; y++) {
                         String biomeStr = biomes2[y];
                         if (biomeStr != null) {
-                            biome = Biome.getBiome(biomeStr.toUpperCase()).getId();
+                            biome = EnumBiome.getBiome(biomeStr.toUpperCase()).getId();
                             level.setBiomeId(bx + x, bz + y, (byte) biome);
                         }
                     }

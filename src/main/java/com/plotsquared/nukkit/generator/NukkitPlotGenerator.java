@@ -18,6 +18,7 @@ import com.intellectualcrafters.plot.util.MainUtil;
 import com.intellectualcrafters.plot.util.block.ScopedLocalBlockQueue;
 import com.plotsquared.nukkit.util.NukkitUtil;
 import com.plotsquared.nukkit.util.block.NukkitWrappedChunk;
+
 import java.util.Map;
 
 public class NukkitPlotGenerator extends Generator implements GeneratorWrapper<Generator> {
@@ -26,7 +27,7 @@ public class NukkitPlotGenerator extends Generator implements GeneratorWrapper<G
     protected final IndependentPlotGenerator plotGenerator;
     protected final Generator platformGenerator;
     protected final boolean full;
-    protected final String world;
+    protected final String world = "PlotCity";
     protected final Map<String, Object> settings;
     protected boolean loaded = false;
     protected cn.nukkit.level.ChunkManager chunkManager;
@@ -38,7 +39,6 @@ public class NukkitPlotGenerator extends Generator implements GeneratorWrapper<G
         }
         this.settings = map;
         MainUtil.initCache();
-        this.world = map.get("world").toString();
         if (map.containsKey("generator")) {
             final Generator cg = (Generator) map.get("generator");
             if (cg instanceof NukkitPlotGenerator) {
@@ -177,7 +177,9 @@ public class NukkitPlotGenerator extends Generator implements GeneratorWrapper<G
     public void populateChunk(int x, int z) {
         if (getPlatformGenerator() != this) {
             getPlatformGenerator().populateChunk(x, z);
-        } 
+        } else {
+            // No populating
+        }
     }
 
     @Override

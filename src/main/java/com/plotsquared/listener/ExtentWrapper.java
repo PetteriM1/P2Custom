@@ -8,4 +8,5 @@ public class ExtentWrapper extends AbstractDelegateExtent {
     protected ExtentWrapper(final Extent extent) {
         super(extent);
     }
+    
 }

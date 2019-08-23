@@ -4,51 +4,18 @@ import cn.nukkit.Player;
 import cn.nukkit.Server;
 import cn.nukkit.block.Block;
 import cn.nukkit.command.CommandSender;
-import cn.nukkit.entity.Entity;
-import cn.nukkit.entity.EntityCreature;
-import cn.nukkit.entity.EntityHanging;
-import cn.nukkit.entity.EntityHuman;
-import cn.nukkit.entity.EntityLiving;
+import cn.nukkit.entity.*;
 import cn.nukkit.entity.item.EntityPotion;
 import cn.nukkit.entity.item.EntityVehicle;
 import cn.nukkit.entity.mob.EntityMob;
 import cn.nukkit.entity.passive.EntityAnimal;
-import cn.nukkit.entity.EntityTameable;
 import cn.nukkit.entity.passive.EntityWaterAnimal;
 import cn.nukkit.entity.projectile.EntityProjectile;
-import cn.nukkit.event.Cancellable;
-import cn.nukkit.event.Event;
-import cn.nukkit.event.EventHandler;
-import cn.nukkit.event.EventPriority;
-import cn.nukkit.event.Listener;
-import cn.nukkit.event.block.BlockBreakEvent;
-import cn.nukkit.event.block.BlockBurnEvent;
-import cn.nukkit.event.block.BlockFormEvent;
-import cn.nukkit.event.block.BlockGrowEvent;
-import cn.nukkit.event.block.BlockPlaceEvent;
-import cn.nukkit.event.block.BlockSpreadEvent;
-import cn.nukkit.event.block.BlockUpdateEvent;
-import cn.nukkit.event.entity.EntityBlockChangeEvent;
-import cn.nukkit.event.entity.EntityCombustByEntityEvent;
-import cn.nukkit.event.entity.EntityCombustEvent;
-import cn.nukkit.event.entity.EntityDamageByEntityEvent;
-import cn.nukkit.event.entity.EntityDamageEvent;
-import cn.nukkit.event.entity.EntityExplodeEvent;
-import cn.nukkit.event.entity.EntitySpawnEvent;
-import cn.nukkit.event.entity.ExplosionPrimeEvent;
-import cn.nukkit.event.entity.ProjectileHitEvent;
-import cn.nukkit.event.entity.ProjectileLaunchEvent;
+import cn.nukkit.event.*;
+import cn.nukkit.event.block.*;
+import cn.nukkit.event.entity.*;
 import cn.nukkit.event.inventory.InventoryCloseEvent;
-import cn.nukkit.event.player.PlayerBucketEmptyEvent;
-import cn.nukkit.event.player.PlayerBucketFillEvent;
-import cn.nukkit.event.player.PlayerChatEvent;
-import cn.nukkit.event.player.PlayerCommandPreprocessEvent;
-import cn.nukkit.event.player.PlayerInteractEvent;
-import cn.nukkit.event.player.PlayerJoinEvent;
-import cn.nukkit.event.player.PlayerMoveEvent;
-import cn.nukkit.event.player.PlayerQuitEvent;
-import cn.nukkit.event.player.PlayerRespawnEvent;
-import cn.nukkit.event.player.PlayerTeleportEvent;
+import cn.nukkit.event.player.*;
 import cn.nukkit.event.potion.PotionCollideEvent;
 import cn.nukkit.event.redstone.RedstoneUpdateEvent;
 import cn.nukkit.metadata.MetadataValue;
@@ -59,39 +26,22 @@ import com.intellectualcrafters.plot.config.C;
 import com.intellectualcrafters.plot.config.Settings;
 import com.intellectualcrafters.plot.flag.Flags;
 import com.intellectualcrafters.plot.flag.IntegerFlag;
-import com.intellectualcrafters.plot.object.Location;
-import com.intellectualcrafters.plot.object.Plot;
-import com.intellectualcrafters.plot.object.PlotArea;
-import com.intellectualcrafters.plot.object.PlotBlock;
-import com.intellectualcrafters.plot.object.PlotId;
-import com.intellectualcrafters.plot.object.PlotPlayer;
-import com.intellectualcrafters.plot.object.StringWrapper;
-import com.intellectualcrafters.plot.util.EventUtil;
-import com.intellectualcrafters.plot.util.MainUtil;
-import com.intellectualcrafters.plot.util.MathMan;
-import com.intellectualcrafters.plot.util.Permissions;
-import com.intellectualcrafters.plot.util.RegExUtil;
-import com.intellectualcrafters.plot.util.TaskManager;
-import com.intellectualcrafters.plot.util.UUIDHandler;
+import com.intellectualcrafters.plot.object.*;
+import com.intellectualcrafters.plot.util.*;
 import com.plotsquared.listener.PlotListener;
 import com.plotsquared.nukkit.object.NukkitPlayer;
 import com.plotsquared.nukkit.util.NukkitUtil;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.Set;
-import java.util.UUID;
 import java.util.regex.Pattern;
 
 public class PlayerEvents extends PlotListener implements Listener {
-
     private boolean tmpTeleport = true;
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void onPhysicsEvent(BlockUpdateEvent event) {
-        if (!event.getBlock().getLevel().getName().equals("plotcreative")) return;
+        if (!event.getBlock().getLevel().getName().equals("PlotCity")) return;
         if (event instanceof RedstoneUpdateEvent) {
             Block block = event.getBlock();
             Location loc = NukkitUtil.getLocation(block.getLocation());
@@ -149,16 +99,17 @@ public class PlayerEvents extends PlotListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onEntityCombustByEntity(EntityCombustEvent event) {
-        if (!event.getEntity().getLevel().getName().equals("plotcreative")) return;
+        if (!event.getEntity().getLevel().getName().equals("PlotCity")) return;
         if (event instanceof EntityCombustByEntityEvent) {
-            EntityDamageByEntityEvent eventChange = new EntityDamageByEntityEvent(((EntityCombustByEntityEvent) event).getCombuster(), event.getEntity(), EntityDamageEvent.DamageCause.FIRE_TICK, event.getDuration());
+            EntityDamageByEntityEvent eventChange =
+        new EntityDamageByEntityEvent(((EntityCombustByEntityEvent) event).getCombuster(), event.getEntity(), EntityDamageEvent.DamageCause.FIRE_TICK, event.getDuration());
             onEntityDamageByEntityEvent(eventChange);
         }
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onEntityDamageByEntityEvent(EntityDamageEvent event) {
-        if (!event.getEntity().getLevel().getName().equals("plotcreative")) return;
+        if (!event.getEntity().getLevel().getName().equals("PlotCity")) return;
         if (event instanceof EntityDamageByEntityEvent) {
             EntityDamageByEntityEvent specific = (EntityDamageByEntityEvent) event;
             Entity damager = specific.getDamager();
@@ -176,7 +127,7 @@ public class PlayerEvents extends PlotListener implements Listener {
     @EventHandler
     public void onProjectileLaunch(ProjectileLaunchEvent event) {
         EntityProjectile entity = event.getEntity();
-        if (!entity.getLevel().getName().equals("plotcreative")) return;
+        if (!entity.getLevel().getName().equals("PlotCity")) return;
         if (!(entity instanceof EntityPotion)) {
             return;
         }
@@ -198,7 +149,6 @@ public class PlayerEvents extends PlotListener implements Listener {
     @EventHandler
     public boolean onProjectileHit(ProjectileHitEvent event) {
         EntityProjectile entity = (EntityProjectile) event.getEntity();
-        if (!entity.getLevel().getName().equals("plotcreative")) return false;
         Location loc = NukkitUtil.getLocation(entity);
         if (!PS.get().hasPlotArea(loc.getWorld())) {
             return true;
@@ -233,12 +183,12 @@ public class PlayerEvents extends PlotListener implements Listener {
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void playerCommand(PlayerCommandPreprocessEvent event) {
-        if (!event.getPlayer().getLevel().getName().equals("plotcreative")) return;
         String msg = event.getMessage().toLowerCase().replaceAll("/", "").trim();
         if (msg.isEmpty()) {
             return;
         }
         Player player = event.getPlayer();
+        if (!event.getPlayer().getLevel().getName().equals("PlotCity")) return;
         PlotPlayer pp = NukkitUtil.getPlayer(player);
         Plot plot = pp.getCurrentPlot();
         if (plot == null) {
@@ -276,7 +226,7 @@ public class PlayerEvents extends PlotListener implements Listener {
         final Player player = event.getPlayer();
         NukkitUtil.getPlayer(event.getPlayer()).unregister();
         final PlotPlayer pp = NukkitUtil.getPlayer(player);
-
+        // Now
         String name = pp.getName();
         StringWrapper sw = new StringWrapper(name);
         UUID uuid = pp.getUUID();
@@ -290,10 +240,11 @@ public class PlayerEvents extends PlotListener implements Listener {
                 plotEntry(pp, plot);
             }
         }
+        // Delayed
 
+        // Async
         TaskManager.runTaskLaterAsync(new Runnable() {
-            @Override
-            public void run() {
+            @Override public void run() {
                 if (!player.hasPlayedBefore() && player.isOnline()) {
                     player.save();
                 }
@@ -305,14 +256,14 @@ public class PlayerEvents extends PlotListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void playerRespawn(PlayerRespawnEvent event) {
         Player player = event.getPlayer();
-        if (!player.getLevel().getName().equals("plotcreative")) return;
+        if (!player.getLevel().getName().equals("PlotCity")) return;
         PlotPlayer pp = NukkitUtil.getPlayer(player);
         EventUtil.manager.doRespawnTask(pp);
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onTeleport(PlayerTeleportEvent event) {
-        if (!event.getPlayer().getLevel().getName().equals("plotcreative")) return;
+        if (!event.getPlayer().getLevel().getName().equals("PlotCity")) return;
         if (event.getTo() == null || event.getFrom() == null) {
             NukkitUtil.getPlayer(event.getPlayer()).deleteMeta("location");
             NukkitUtil.getPlayer(event.getPlayer()).deleteMeta("lastplot");
@@ -437,7 +388,6 @@ public class PlayerEvents extends PlotListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void playerMove(PlayerMoveEvent event) {
-        if (!event.getPlayer().getLevel().getName().equals("plotcreative")) return;
         cn.nukkit.level.Location from = event.getFrom();
         cn.nukkit.level.Location to = event.getTo();
         int x2;
@@ -555,9 +505,11 @@ public class PlayerEvents extends PlotListener implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.LOW)
     public void onChat(PlayerChatEvent event) {
-        if (!event.getPlayer().getLevel().getName().equals("plotcreative")) return;
+        if (event.isCancelled())
+            return;
+        if (!event.getPlayer().getLevel().getName().equals("PlotCity")) return;
         PlotPlayer plotPlayer = NukkitUtil.getPlayer(event.getPlayer());
         Location location = plotPlayer.getLocation();
         PlotArea area = location.getPlotArea();
@@ -598,7 +550,7 @@ public class PlayerEvents extends PlotListener implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void blockDestroy(BlockBreakEvent event) {
         Player player = event.getPlayer();
-        if (!player.getLevel().getName().equals("plotcreative")) return;
+        if (!player.getLevel().getName().equals("PlotCity")) return;
         Location location = NukkitUtil.getLocation(event.getBlock().getLocation());
         PlotArea area = location.getPlotArea();
         if (area == null) {
@@ -658,8 +610,8 @@ public class PlayerEvents extends PlotListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onBigBoom(ExplosionPrimeEvent event) {
-        if (!event.getEntity().getLevel().getName().equals("plotcreative")) return;
         Entity entity = event.getEntity();
+        if (!event.getEntity().getLevel().getName().equals("PlotCity")) return;
         Location location = NukkitUtil.getLocation(entity);
         PlotArea area = location.getPlotArea();
         if (area == null) {
@@ -683,7 +635,7 @@ public class PlayerEvents extends PlotListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onBigBoom(EntityExplodeEvent event) {
-        if (!event.getEntity().getLevel().getName().equals("plotcreative")) return;
+        if (!event.getEntity().getLevel().getName().equals("PlotCity")) return;
         Location location = NukkitUtil.getLocation(event.getPosition());
         PlotArea area = location.getPlotArea();
         if (area == null) {
@@ -726,7 +678,7 @@ public class PlayerEvents extends PlotListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onEntityBlockForm(BlockFormEvent event) {
         String world = event.getBlock().getLevel().getName();
-        if (!world.equals("plotcreative")) return;
+        if (!world.equals("PlotCity")) return;
         if (!PS.get().hasPlotArea(world)) {
             return;
         }
@@ -738,7 +690,7 @@ public class PlayerEvents extends PlotListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onBlockSpread(BlockSpreadEvent event) {
         Block block = event.getBlock();
-        if (!block.getLevel().getName().equals("plotcreative")) return;
+        if (!block.getLevel().getName().equals("PlotCity")) return;
         Location location = NukkitUtil.getLocation(block.getLocation());
         if (location.isPlotRoad()) {
             event.setCancelled(true);
@@ -775,7 +727,7 @@ public class PlayerEvents extends PlotListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onGrow(BlockGrowEvent event) {
         Block b = event.getBlock();
-        if (!b.getLevel().getName().equals("plotcreative")) return;
+        if (!b.getLevel().getName().equals("PlotCity")) return;
         Location location = NukkitUtil.getLocation(b.getLocation());
         if (location.isUnownedPlotArea()) {
             event.setCancelled(true);
@@ -785,7 +737,7 @@ public class PlayerEvents extends PlotListener implements Listener {
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     public void onInteract(PlayerInteractEvent event) {
         Player player = event.getPlayer();
-        if (!player.getLevel().getName().equals("plotcreative")) return;
+        if (!player.getLevel().getName().equals("PlotCity")) return;
         PlotPlayer pp = NukkitUtil.getPlayer(player);
         PlotArea area = pp.getPlotAreaAbs();
         if (area == null) {
@@ -845,7 +797,7 @@ public class PlayerEvents extends PlotListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void creatureSpawnEvent(EntitySpawnEvent event) {
         Entity entity = event.getEntity();
-        if (!entity.getLevel().getName().equals("plotcreative")) return;
+        if (!entity.getLevel().getName().equals("PlotCity")) return;
         Location location = NukkitUtil.getLocation(entity.getLocation());
         PlotArea area = location.getPlotArea();
         if (area == null) {
@@ -873,7 +825,7 @@ public class PlayerEvents extends PlotListener implements Listener {
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void onEntityFall(EntityBlockChangeEvent event) {
         Entity entity = event.getEntity();
-        if (!entity.getLevel().getName().equals("plotcreative")) return;
+        if (!entity.getLevel().getName().equals("PlotCity")) return;
         Location location = NukkitUtil.getLocation(entity);
         if (!PS.get().hasPlotArea(location.getWorld())) {
             return;
@@ -1017,7 +969,7 @@ public class PlayerEvents extends PlotListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onBlockBurn(BlockBurnEvent event) {
         Block b = event.getBlock();
-        if (!b.getLevel().getName().equals("plotcreative")) return;
+        if (!b.getLevel().getName().equals("PlotCity")) return;
         Location location = NukkitUtil.getLocation(b.getLocation());
 
         PlotArea area = location.getPlotArea();
@@ -1028,16 +980,19 @@ public class PlayerEvents extends PlotListener implements Listener {
         Plot plot = location.getOwnedPlot();
         if (plot == null || !plot.getFlag(Flags.BLOCK_BURN, false)) {
             event.setCancelled(true);
-            return;
         }
 
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onBucketEmpty(PlayerBucketEmptyEvent event) {
-        Block block = event.getBlockClicked();
-        if (!block.getLevel().getName().equals("plotcreative")) return;
-        Block b = block.getSide(event.getBlockFace());
+        Block b;
+        if (event.getBlockFace() == null) {
+            b = event.getBlockClicked();
+        } else {
+            b = event.getBlockClicked().getSide(event.getBlockFace());
+        }
+        if (!b.getLevel().getName().equals("PlotCity")) return;
         Location location = NukkitUtil.getLocation(b.getLocation());
         PlotArea area = location.getPlotArea();
         if (area == null) {
@@ -1071,7 +1026,7 @@ public class PlayerEvents extends PlotListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onInventoryClose(InventoryCloseEvent event) {
-        if (!event.getPlayer().getLevel().getName().equals("plotcreative")) return;
+        if (!event.getPlayer().getLevel().getName().equals("PlotCity")) return;
         NukkitUtil.getPlayer(event.getPlayer()).deleteMeta("inventory");
     }
 
@@ -1087,7 +1042,7 @@ public class PlayerEvents extends PlotListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onBucketFill(PlayerBucketFillEvent event) {
         Block b = event.getBlockClicked();
-        if (!b.getLevel().getName().equals("plotcreative")) return;
+        if (!b.getLevel().getName().equals("PlotCity")) return;
         Location location = NukkitUtil.getLocation(b.getLocation());
         PlotArea area = location.getPlotArea();
         if (area == null) {
@@ -1125,7 +1080,7 @@ public class PlayerEvents extends PlotListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onPotionSplash(PotionCollideEvent event) {
         EntityPotion entity = event.getThrownPotion();
-        if (!entity.getLevel().getName().equals("plotcreative")) return;
+        if (!entity.getLevel().getName().equals("PlotCity")) return;
         Location l = NukkitUtil.getLocation(entity);
         if (!PS.get().hasPlotArea(l.getWorld())) {
             return;
@@ -1227,6 +1182,14 @@ public class PlayerEvents extends PlotListener implements Listener {
                     MainUtil.sendMessage(plotPlayer, C.NO_PERMISSION_EVENT, "plots.admin.destroy." + stub);
                     return false;
                 }
+            } else if (false) { // TODO armor stand
+                if (plot != null && (plot.getFlag(Flags.MISC_BREAK, false) || plot.isAdded(plotPlayer.getUUID()))) {
+                    return true;
+                }
+                if (!Permissions.hasPermission(plotPlayer, "plots.admin.destroy." + stub)) {
+                    MainUtil.sendMessage(plotPlayer, C.NO_PERMISSION_EVENT, "plots.admin.destroy." + stub);
+                    return false;
+                }
             } else if (victim instanceof EntityMob) { // victim is monster
                 if (plot != null && (plot.getFlag(Flags.HOSTILE_ATTACK, false) || plot.getFlag(Flags.PVE, false) || plot
                         .isAdded(plotPlayer.getUUID()))) {
@@ -1285,7 +1248,7 @@ public class PlayerEvents extends PlotListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void blockCreate(BlockPlaceEvent event) {
-        if (!event.getBlock().getLevel().getName().equals("plotcreative")) return;
+        if (!event.getBlock().getLevel().getName().equals("PlotCity")) return;
         Location location = NukkitUtil.getLocation(event.getBlock().getLocation());
         PlotArea area = location.getPlotArea();
         if (area == null) {
