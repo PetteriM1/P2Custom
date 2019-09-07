@@ -61,7 +61,7 @@ public class NukkitPlotGenerator extends Generator implements GeneratorWrapper<G
 
                 @Override
                 public String getName() {
-                    return cg.getClass().getName();
+                    return "plotcreative";
                 }
 
                 @Override
@@ -130,7 +130,7 @@ public class NukkitPlotGenerator extends Generator implements GeneratorWrapper<G
 
     @Override
     public int getId() {
-        return 1;
+        return 7;
     }
 
     @Override
@@ -177,7 +177,7 @@ public class NukkitPlotGenerator extends Generator implements GeneratorWrapper<G
     public void populateChunk(int x, int z) {
         if (getPlatformGenerator() != this) {
             getPlatformGenerator().populateChunk(x, z);
-        } 
+        }
     }
 
     @Override
@@ -187,7 +187,7 @@ public class NukkitPlotGenerator extends Generator implements GeneratorWrapper<G
 
     @Override
     public String getName() {
-        return plotGenerator.getName();
+        return "plotsquared";
     }
 
     @Override

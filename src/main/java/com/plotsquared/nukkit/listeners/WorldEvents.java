@@ -20,13 +20,11 @@ public class WorldEvents implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onWorldLoad(LevelLoadEvent event) {
-        if (!event.getLevel().getName().equals("plotcreative")) return;
         handle(event.getLevel());
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onWorldInit(LevelInitEvent event) {
-        if (!event.getLevel().getName().equals("plotcreative")) return;
         handle(event.getLevel());
     }
 
@@ -43,7 +41,7 @@ public class WorldEvents implements Listener {
                 settings.put("generator", gen);
                 PS.get().loadWorld(name, new NukkitPlotGenerator(settings));
                 for (PlotArea area : PS.get().getPlotAreas(name)) {
-                    area.MAX_BUILD_HEIGHT = Math.min(127, area.MAX_BUILD_HEIGHT);
+                    area.MAX_BUILD_HEIGHT = Math.min(256, area.MAX_BUILD_HEIGHT);
                 }
             }
         } catch (Throwable e) {

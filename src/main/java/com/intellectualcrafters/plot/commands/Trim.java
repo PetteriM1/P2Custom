@@ -163,6 +163,7 @@ public class Trim extends SubCommand {
                             if (nonViable.isEmpty()) {
                                 Trim.TASK = false;
                                 player.sendMessage("Trim done!");
+                                player.sendMessage("Warning: Using trim more than once may clear your world!");
                                 return;
                             }
                             Iterator<ChunkLoc> iterator = nonViable.iterator();
@@ -210,6 +211,7 @@ public class Trim extends SubCommand {
                         public void run() {
                             Trim.TASK = false;
                             player.sendMessage("Trim done!");
+                            player.sendMessage("Warning: Using trim more than once may clear your world!");
                         }
                     };
                 }

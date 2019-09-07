@@ -9,6 +9,7 @@ import cn.nukkit.entity.EntityCreature;
 import cn.nukkit.entity.EntityHanging;
 import cn.nukkit.entity.EntityHuman;
 import cn.nukkit.entity.EntityLiving;
+import cn.nukkit.entity.item.EntityArmorStand;
 import cn.nukkit.entity.item.EntityPotion;
 import cn.nukkit.entity.item.EntityVehicle;
 import cn.nukkit.entity.mob.EntityMob;
@@ -1226,6 +1227,14 @@ public class PlayerEvents extends PlotListener implements Listener {
             PlotPlayer plotPlayer = NukkitUtil.getPlayer(player);
             if (victim instanceof EntityHanging) { // hanging
                 if (plot != null && (plot.getFlag(Flags.HANGING_BREAK, false) || plot.isAdded(plotPlayer.getUUID()))) {
+                    return true;
+                }
+                if (!Permissions.hasPermission(plotPlayer, "plots.admin.destroy." + stub)) {
+                    MainUtil.sendMessage(plotPlayer, C.NO_PERMISSION_EVENT, "plots.admin.destroy." + stub);
+                    return false;
+                }
+            } else if (victim instanceof EntityArmorStand) {
+                if (plot != null && (plot.getFlag(Flags.MISC_BREAK, false) || plot.isAdded(plotPlayer.getUUID()))) {
                     return true;
                 }
                 if (!Permissions.hasPermission(plotPlayer, "plots.admin.destroy." + stub)) {
