@@ -61,7 +61,7 @@ public class NukkitPlotGenerator extends Generator implements GeneratorWrapper<G
 
                 @Override
                 public String getName() {
-                    return "plotcreative";
+                    return "plotsquared";
                 }
 
                 @Override
