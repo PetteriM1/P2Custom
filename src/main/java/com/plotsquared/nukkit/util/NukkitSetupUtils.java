@@ -155,7 +155,7 @@ public class NukkitSetupUtils extends SetupUtils {
             return null;
         }
         try {
-            Field field = Level.class.getDeclaredField("generatorInstance");
+            Field field = Level.class.getDeclaredField("generatorClass");
             field.setAccessible(true);
             Generator generator = (Generator) field.get(world);
             if (!(generator instanceof NukkitPlotGenerator)) {
