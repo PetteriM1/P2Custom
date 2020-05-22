@@ -238,7 +238,7 @@ public class PS {
             final ConfigurationSection section = this.worlds.getConfigurationSection("worlds");
             if (section != null) {
                 for (String world : section.getKeys(false)) {
-                    if (world.equals("CheckingPlotSquaredGenerator")) {
+                    if (!world.equals("plotcreative")) {
                         continue;
                     }
                     if (WorldUtil.IMP.isWorld(world)) {

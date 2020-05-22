@@ -24,7 +24,7 @@ public class NukkitSetupUtils extends SetupUtils {
 
     public NukkitSetupUtils(NukkitMain plugin) {
         this.plugin = plugin;
-        Generator.addGenerator(NukkitHybridGen.class, "plotsquared", 7);
+        Generator.addGenerator(NukkitHybridGen.class, "PlotSquared", 7);
     }
 
     @Override
