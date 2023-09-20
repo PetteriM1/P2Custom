@@ -17,7 +17,6 @@ import com.intellectualcrafters.plot.util.Permissions;
 import com.intellectualcrafters.plot.util.TaskManager;
 import com.plotsquared.general.commands.CommandDeclaration;
 
-import javax.annotation.Nullable;
 import java.util.Set;
 
 @CommandDeclaration(command = "auto",
@@ -144,7 +143,7 @@ public class Auto extends SubCommand {
         }
     }
 
-    private static boolean checkAllowedPlots(PlotPlayer player, PlotArea plotarea, @Nullable Integer allowed_plots, int size_x, int size_z) {
+    private static boolean checkAllowedPlots(PlotPlayer player, PlotArea plotarea, Integer allowed_plots, int size_x, int size_z) {
         if (allowed_plots == null)
             allowed_plots = player.getAllowedPlots();
         int currentPlots = Settings.Limit.GLOBAL ? player.getPlotCount() : player.getPlotCount(plotarea.worldname);
@@ -233,7 +232,7 @@ public class Auto extends SubCommand {
      * @param start
      * @param schem
      */
-    public static void autoClaimSafe(final PlotPlayer player, final PlotArea area, PlotId start, final String schem, @Nullable final Integer allowed_plots) {
+    public static void autoClaimSafe(final PlotPlayer player, final PlotArea area, PlotId start, final String schem, final Integer allowed_plots) {
         player.setMeta(Auto.class.getName(), true);
         autoClaimFromDatabase(player, area, start, new RunnableVal<Plot>() {
             @Override
