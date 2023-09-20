@@ -1,6 +1,5 @@
 package com.plotsquared.nukkit;
 
-import cn.nukkit.Nukkit;
 import cn.nukkit.OfflinePlayer;
 import cn.nukkit.Player;
 import cn.nukkit.entity.Entity;
@@ -43,25 +42,11 @@ public final class NukkitMain extends PluginBase implements Listener, IPlotMain 
 
     public static WorldEdit worldEdit;
 
-    private int[] version;
     private String name;
 
     @Override
     public int[] getServerVersion() {
-        if (this.version == null) {
-            try {
-                this.version = new int[3];
-                String[] split = Nukkit.API_VERSION.split("\\.");
-                this.version[0] = Integer.parseInt(split[0]);
-                this.version[1] = Integer.parseInt(split[1]);
-                if (split.length == 3) {
-                    this.version[2] = Integer.parseInt(split[2]);
-                }
-            } catch (NumberFormatException e) {
-                return new int[]{1, 0, 0};
-            }
-        }
-        return this.version;
+        return new int[]{1, 0, 0};
     }
 
     @Override

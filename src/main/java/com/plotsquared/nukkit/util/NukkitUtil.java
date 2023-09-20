@@ -147,7 +147,7 @@ public class NukkitUtil extends WorldUtil {
 
     @Override
     public int getHighestBlock(String world, int x, int z) {
-        return getWorld(world).getHeightMap(x, z);
+        return getWorld(world).getHighestBlockAt(x, z);
     }
 
     @Override

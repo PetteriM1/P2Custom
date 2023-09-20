@@ -31,7 +31,6 @@ import com.plotsquared.nukkit.events.PlotRateEvent;
 import com.plotsquared.nukkit.events.PlotUnlinkEvent;
 import com.plotsquared.nukkit.object.NukkitPlayer;
 
-import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.UUID;
 
@@ -131,7 +130,6 @@ public class NukkitEventUtil extends EventUtil {
     }
 
     @Override
-    @Nullable
     public Rating callRating(PlotPlayer player, Plot plot, Rating rating) {
         PlotRateEvent event = new PlotRateEvent(player, rating, plot);
         plugin.getServer().getPluginManager().callEvent(event);

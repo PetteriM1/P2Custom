@@ -31,7 +31,6 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
-import javax.annotation.Nullable;
 
 /**
  * @author Jesse Boyd
@@ -681,7 +680,7 @@ public abstract class PlotArea {
         return this.plots.put(plot.getId(), plot) == null;
     }
 
-    public Plot getNextFreePlot(PlotPlayer player, @Nullable  PlotId start) {
+    public Plot getNextFreePlot(PlotPlayer player,  PlotId start) {
         int plots;
         PlotId center;
         PlotId min = getMin();

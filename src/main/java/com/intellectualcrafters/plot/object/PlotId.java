@@ -1,7 +1,5 @@
 package com.intellectualcrafters.plot.object;
 
-import javax.annotation.Nullable;
-
 public class PlotId {
     /**
      * x value
@@ -79,7 +77,7 @@ public class PlotId {
         }
     }
 
-    public static PlotId of(@Nullable Plot plot) {
+    public static PlotId of(Plot plot) {
         return plot != null ? plot.getId() : null;
     }
 
