@@ -787,16 +787,17 @@ public class PlayerEvents extends PlotListener implements Listener {
     public void onInteract(PlayerInteractEvent event) {
         Player player = event.getPlayer();
         if (!player.getLevel().getName().equals("plotcreative")) return;
-        PlotPlayer pp = NukkitUtil.getPlayer(player);
-        PlotArea area = pp.getPlotAreaAbs();
-        if (area == null) {
-            return;
-        }
         switch (event.getAction()) {
             case RIGHT_CLICK_BLOCK:
             case LEFT_CLICK_BLOCK:
             case PHYSICAL: {
-                Plot plot = pp.getCurrentPlot();
+                Location location = NukkitUtil.getLocation(event.getBlock().getLocation());
+                PlotArea area = location.getPlotArea();
+                if (area == null) {
+                    return;
+                }
+                PlotPlayer pp = NukkitUtil.getPlayer(player);
+                Plot plot = area.getPlotAbs(location);
                 if (plot == null || !plot.isAdded(pp.getUUID())) {
                     Block block = event.getBlock();
                     if (block != null) {
@@ -822,6 +823,11 @@ public class PlayerEvents extends PlotListener implements Listener {
             }
             case LEFT_CLICK_AIR:
             case RIGHT_CLICK_AIR: {
+                PlotPlayer pp = NukkitUtil.getPlayer(player);
+                PlotArea area = pp.getPlotAreaAbs();
+                if (area == null) {
+                    return;
+                }
                 Plot plot = pp.getCurrentPlot();
                 if (plot == null || !plot.isAdded(pp.getUUID())) {
                     if (plot == null) {
