@@ -107,7 +107,8 @@ public class NukkitPlayer extends PlotPlayer {
 
     @Override
     public void sendMessage(String message) {
-        if (!StringMan.isEqual(this.<String>getMeta("lastMessage"), message) || (System.currentTimeMillis() - this.<Long>getMeta("lastMessageTime") > 5000)) {
+        Long time;
+        if (!StringMan.isEqual(this.<String>getMeta("lastMessage"), message) || ((time = this.<Long>getMeta("lastMessageTime")) != null && System.currentTimeMillis() - time > 5000)) {
             setMeta("lastMessage", message);
             setMeta("lastMessageTime", System.currentTimeMillis());
             this.player.sendMessage(message);

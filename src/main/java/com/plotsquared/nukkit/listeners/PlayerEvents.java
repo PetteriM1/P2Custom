@@ -39,7 +39,6 @@ import cn.nukkit.event.entity.EntitySpawnEvent;
 import cn.nukkit.event.entity.ExplosionPrimeEvent;
 import cn.nukkit.event.entity.ProjectileHitEvent;
 import cn.nukkit.event.entity.ProjectileLaunchEvent;
-import cn.nukkit.event.inventory.InventoryCloseEvent;
 import cn.nukkit.event.player.PlayerBucketEmptyEvent;
 import cn.nukkit.event.player.PlayerBucketFillEvent;
 import cn.nukkit.event.player.PlayerChatEvent;
@@ -235,7 +234,7 @@ public class PlayerEvents extends PlotListener implements Listener {
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void playerCommand(PlayerCommandPreprocessEvent event) {
         if (!event.getPlayer().getLevel().getName().equals("plotcreative")) return;
-        String msg = event.getMessage().toLowerCase().replaceAll("/", "").trim();
+        String msg = event.getMessage().toLowerCase().replaceAll("\\s+", "");
         if (msg.isEmpty()) {
             return;
         }
@@ -283,12 +282,14 @@ public class PlayerEvents extends PlotListener implements Listener {
         UUID uuid = pp.getUUID();
         UUIDHandler.add(sw, uuid);
 
-        Location loc = pp.getLocation();
-        PlotArea area = loc.getPlotArea();
-        if (area != null) {
-            Plot plot = area.getPlot(loc);
-            if (plot != null) {
-                plotEntry(pp, plot);
+        if (player.getLevel().getName().equals("plotcreative")) {
+            Location loc = pp.getLocation();
+            PlotArea area = loc.getPlotArea();
+            if (area != null) {
+                Plot plot = area.getPlot(loc);
+                if (plot != null) {
+                    plotEntry(pp, plot);
+                }
             }
         }
 
@@ -360,7 +361,7 @@ public class PlayerEvents extends PlotListener implements Listener {
                 this.tmpTeleport = true;
                 return;
             }
-            Integer border = area.getBorder();
+            int border = area.getBorder();
             if (x2 > border) {
                 to.setComponents(border - 4, to.getY(), to.getZ());
                 this.tmpTeleport = false;
@@ -419,7 +420,7 @@ public class PlayerEvents extends PlotListener implements Listener {
                 this.tmpTeleport = true;
                 return;
             }
-            Integer border = area.getBorder();
+            int border = area.getBorder();
             if (z2 > border) {
                 to.setComponents(to.getX(), to.getY(), border - 4);
                 this.tmpTeleport = false;
@@ -480,7 +481,7 @@ public class PlayerEvents extends PlotListener implements Listener {
                 this.tmpTeleport = true;
                 return;
             }
-            Integer border = area.getBorder();
+            int border = area.getBorder();
             if (x2 > border) {
                 to.setComponents(border - 4, to.getY(), to.getZ());
                 this.tmpTeleport = false;
@@ -539,7 +540,7 @@ public class PlayerEvents extends PlotListener implements Listener {
                 this.tmpTeleport = true;
                 return;
             }
-            Integer border = area.getBorder();
+            int border = area.getBorder();
             if (z2 > border) {
                 to.setComponents(to.getX(), to.getY(), border - 4);
                 this.tmpTeleport = false;
@@ -1081,17 +1082,9 @@ public class PlayerEvents extends PlotListener implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST)
-    public void onInventoryClose(InventoryCloseEvent event) {
-        if (!event.getPlayer().getLevel().getName().equals("plotcreative")) return;
-        NukkitUtil.getPlayer(event.getPlayer()).deleteMeta("inventory");
-    }
-
     @EventHandler(priority = EventPriority.MONITOR)
     public void onLeave(PlayerQuitEvent event) {
-        if (TaskManager.TELEPORT_QUEUE.contains(event.getPlayer().getName())) {
-            TaskManager.TELEPORT_QUEUE.remove(event.getPlayer().getName());
-        }
+        TaskManager.TELEPORT_QUEUE.remove(event.getPlayer().getName());
         PlotPlayer pp = NukkitUtil.getPlayer(event.getPlayer());
         pp.unregister();
     }

@@ -250,11 +250,11 @@ public class StringMan {
     }
 
     public static boolean isEqual(String a, String b) {
-        return (a == b) || ((a != null) && (b != null) && (a.length() == b.length()) && (a.hashCode() == b.hashCode()) && a.equals(b));
+        return a != null && b != null && a.equals(b);
     }
 
     public static boolean isEqualIgnoreCase(String a, String b) {
-        return (a == b) || ((a != null) && (b != null) && (a.length() == b.length()) && a.equalsIgnoreCase(b));
+        return a != null && b != null && a.equalsIgnoreCase(b);
     }
 
     public static String repeat(String s, int n) {

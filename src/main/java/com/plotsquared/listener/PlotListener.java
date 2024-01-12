@@ -124,7 +124,7 @@ public class PlotListener {
 
                 Optional<Integer> musicFlag = plot.getFlag(Flags.MUSIC);
                 if (musicFlag.isPresent()) {
-                    Integer id = musicFlag.get();
+                    int id = musicFlag.get();
                     if ((id >= 2256 && id <= 2267) || (id == 0)) {
                         Location loc = player.getLocation();
                         Location lastLoc = player.getMeta("music");

@@ -77,15 +77,17 @@ public abstract class EventUtil {
                 MainUtil.sendMessage(player, C.WORLDEDIT_BYPASSED);
             }
         }
-        final Plot plot = player.getCurrentPlot();
-        if (Settings.Teleport.ON_LOGIN && plot != null) {
-            TaskManager.runTask(new Runnable() {
-                @Override
-                public void run() {
-                    plot.teleportPlayer(player);
-                }
-            });
-            MainUtil.sendMessage(player, C.TELEPORTED_TO_ROAD.f() + " (on-login) " + "(" + plot.getId().x + ";" + plot.getId().y + ")");
+        if (Settings.Teleport.ON_LOGIN) {
+            final Plot plot = player.getCurrentPlot();
+            if (plot != null) {
+                TaskManager.runTask(new Runnable() {
+                    @Override
+                    public void run() {
+                        plot.teleportPlayer(player);
+                    }
+                });
+                MainUtil.sendMessage(player, C.TELEPORTED_TO_ROAD.f() + " (on-login) " + "(" + plot.getId().x + ";" + plot.getId().y + ")");
+            }
         }
     }
 
