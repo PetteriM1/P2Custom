@@ -20,7 +20,7 @@ import com.plotsquared.nukkit.util.NukkitUtil;
 import com.plotsquared.nukkit.util.block.NukkitWrappedChunk;
 import java.util.Map;
 
-public class NukkitPlotGenerator extends Generator implements GeneratorWrapper<Generator> {
+public class NukkitPlotGenerator extends cn.nukkit.level.generator.Void implements GeneratorWrapper<Generator> {
 
     protected final PseudoRandom random = new PseudoRandom();
     protected final IndependentPlotGenerator plotGenerator;
